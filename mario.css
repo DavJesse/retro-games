@@ -1,4 +1,8 @@
-#maio {
+#mario {
     height: 50px;
     width: 50px;
+    background-color: #FF0000;
+    position: absolute;
+    bottom: 20px;
+    left: 100px;
 }
