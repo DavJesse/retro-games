@@ -1,14 +1,25 @@
 const mario = document.getElementById("mario");
+const gravity = -1;
 
+let marioPositionX = 100; // x-axis position
+let marioPositionY = 0; // y-axis position
 let marioSpeed = 5; // Movement speed
-let marioPosition = 100; // Initial position
+let marioVelocityY = 0;
+let isJumping = false;
 let movingLeft = false;
 let movingRight = false;
+
 
 // Listen for key press (set movement direction)
 document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft") movingLeft = true;
     if (event.key === "ArrowRight") movingRight = true;
+
+    // Jumping logic
+    if (event.key === " " && !isJumping) {
+        isJumping = true;
+        marioVelocityY = 15; // Jumping intensity
+    }
 });
 
 // Listen for key release (stop movement)
@@ -19,10 +30,23 @@ document.addEventListener("keyup", (event) => {
 
 // Function to continuously move Mario
 function moveMario() {
-    if (movingLeft) marioPosition -= marioSpeed;
-    if (movingRight) marioPosition += marioSpeed;
+    // Horizontal movements
+    if (movingLeft) marioPositionX -= marioSpeed;
+    if (movingRight) marioPositionX += marioSpeed;
 
-    mario.style.left = marioPosition + "px"; // Update position
+    // Gravity logic
+    marioVelocityY += gravity;
+    marioPositionY += marioVelocityY;
+
+    // Prevent mario from falling out of bounds
+    if (marioPositionY < 0) {
+        marioPositionY = 0;
+        marioVelocityY = 0;
+        isJumping = false;
+    };
+    
+    mario.style.left = marioPositionX + "px"; // Update position
+    mario.style.bottom = marioPositionY + "px"; // Update position
     requestAnimationFrame(moveMario); // Repeat animation
 }
 
