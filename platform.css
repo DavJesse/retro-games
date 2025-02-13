@@ -1,0 +1,7 @@
+.platform {
+    width: 200px;
+    height: 20px;
+    background-color: brown;
+    position: absolute;
+    bottom: 0;
+}
