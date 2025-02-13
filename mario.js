@@ -32,17 +32,22 @@ document.addEventListener("keyup", (event) => {
 // detect collition
 function checkPlatformCollision() {
     platforms.forEach(platform => {
-        const platformRect = platform.getBoundingClientRect();
-        const marioRect = mario.getBoundingClientRect();
+        const platformTop = platform.offsetTop;
+        const platformLeft = platform.offsetLeft;
+        const platformRight = platformLeft + platform.offsetWidth;
 
-        // Check if Mario is above the platform and falling onto it
+        const marioBottom = marioPositionY;
+        const marioTop = marioBottom + mario.offsetHeight;
+        const marioLeft = marioPositionX;
+        const marioRight = marioLeft + mario.offsetWidth;
+
+        // Check if Mario lands on top of the platform
         if (
-            marioRect.bottom >= platformRect.top && // Mario is landing
-            marioRect.bottom <= platformRect.top + marioVelocityY && // Only lands if falling
-            marioRect.right > platformRect.left && // Mario's right side is within platform
-            marioRect.left < platformRect.right // Mario's left side is within platform
+            marioBottom <= platformTop && // Mario is above platform
+            marioTop + marioVelocityY >= platformTop && // Mario is falling onto platform
+            marioRight > platformLeft && marioLeft < platformRight // Mario is inside platform width
         ) {
-            marioPositionY = platformRect.top - marioRect.height; // Place Mario on top
+            marioPositionY = platformTop - mario.offsetHeight; // Place Mario on platform
             marioVelocityY = 0; // Stop falling
             isJumping = false; // Allow jumping again
         }
