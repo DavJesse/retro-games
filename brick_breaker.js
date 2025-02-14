@@ -43,13 +43,12 @@ function checkPlatformCollision() {
 
         // Check if Mario lands on top of the platform
         if (
-            marioBottom <= platformTop && // Mario is above platform
-            marioTop + marioVelocityY >= platformTop && // Mario is falling onto platform
+            marioPositionY != 0 && marioBottom <= platformTop && // Mario is above platform
+            marioTop + marioVelocityY <= platformTop && // Mario is falling onto platform
             marioRight > platformLeft && marioLeft < platformRight // Mario is inside platform width
         ) {
-            marioPositionY = platformTop - mario.offsetHeight; // Place Mario on platform
-            marioVelocityY = 0; // Stop falling
             isJumping = false; // Allow jumping again
+            marioPositionY = platformTop - mario.offsetHeight; // Place Mario on platform
         }
     });
 }
