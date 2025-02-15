@@ -1,7 +1,9 @@
-.platform {
-    width: 200px;
-    height: 20px;
-    background-color: brown;
+#bricks {
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: lightgreen;
     position: absolute;
-    bottom: 0;
+    top: 0px;
+    left: 0px;
 }
