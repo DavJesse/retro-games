@@ -6,6 +6,11 @@ export function loadBrickBreaker() {
     paddle.id = "paddle";
     gameContainer.appendChild(paddle);
 
+    // Create movement
+    const move = document.createElement("div");
+    move.id = "move";
+    gameContainer.paddle.appendChild(move);
+
      // Create bricks
      const bricks = document.createElement("div");
      bricks.id = "bricks";
