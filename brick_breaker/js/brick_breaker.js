@@ -18,11 +18,27 @@ function left() {
     }
 }
 
+function up() {
+    ballMovement = document.getElementById("ball");
+    if (ballMovement.classList == 'up') {
+        return;
+    }
+
+    ballMovement.classList.add("up");
+
+    setTimeout(function(){
+        ballMovement.classList.remove("up");
+    }, 300);
+}
+
 document.addEventListener("keydown", event => {
     if (event.key == "ArrowLeft") {
         left();
     }
     if (event.key == "ArrowRight") {
         right();
+    }
+    if (event.key == "ArrowUp") {
+        up();
     }
 })
