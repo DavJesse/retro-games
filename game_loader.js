@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const gameSelection = document.getElementById("game-selection")
+    const scoreBoard = document.getElementById("score-board");
+    const gameSelection = document.getElementById("game-selection");
     const gameContainer = document.getElementById("game-container");
 
     function getGameFromURL() {
@@ -10,11 +11,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const game = getGameFromURL();
 
     if (!game) {
+        scoreBoard.style.display = "none";
         gameSelection.style.display = "block";
         gameContainer.style.display = "none";
         return;
     } 
 
+    scoreBoard.style.display = "block";
     gameSelection.style.display = "none";
     gameContainer.style.display = "block";
     
