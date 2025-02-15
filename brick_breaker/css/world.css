@@ -1,6 +1,7 @@
 #game-container {
-    height: 500px;
-    width: 100%;
-    background-color: #87CEEB;
+    height: 600px;
+    width: 580px;
+    background-color: #000000;
     position: relative;
+    margin: auto;
 }
