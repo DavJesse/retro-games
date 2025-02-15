@@ -6,4 +6,14 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    animation: objects 1.5s infinite linear;
+}
+
+@keyframes objects {
+    0% {
+        top: 0px;
+    }
+    100% {
+        top: 540px;
+    }
 }

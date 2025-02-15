@@ -1,0 +1,25 @@
+#ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    background-color: #ffffff;
+    margin: auto;
+    margin-left: 60px;
+    
+}
+
+.up {
+    bottom: 0px;
+    animation: bounce 0.5s infinite linear;
+}
+
+@keyframes bounce {
+    0% {
+        bottom: 0px;
+    }
+    100% {
+        bottom: 1740px;
+    }
+}
