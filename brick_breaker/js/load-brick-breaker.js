@@ -7,9 +7,9 @@ export function loadBrickBreaker() {
     gameContainer.appendChild(paddle);
 
     // Create movement
-    const move = document.createElement("div");
-    move.id = "move";
-    gameContainer.paddle.appendChild(move);
+    const ball = document.createElement("div");
+    ball.id = "ball";
+    gameContainer.paddle.appendChild(ball);
 
      // Create bricks
      const bricks = document.createElement("div");
