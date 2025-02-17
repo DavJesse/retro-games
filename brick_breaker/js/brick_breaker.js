@@ -37,3 +37,15 @@ function updateBallPosition() {
 }
 
 setInterval(updateBallPosition, 16); // Runs ~60 times per second
+
+document.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft" && paddleX > 0) {
+        paddleX -= 20;
+    }
+    if (event.key === "ArrowRight" && paddleX < 500) {
+        paddleX += 20;
+    }
+    
+    document.getElementById("paddle").style.left = paddleX + "px";
+});
+
