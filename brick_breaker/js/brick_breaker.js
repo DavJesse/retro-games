@@ -20,7 +20,7 @@ function left() {
 
 function up() {
     ballMovement = document.getElementById("ball");
-    if (ballMovement.classList == 'up') {
+    if (ballMovement.classList.contains('up')) {
         return;
     }
 
@@ -28,7 +28,7 @@ function up() {
 
     setTimeout(function(){
         ballMovement.classList.remove("up");
-    }, 300);
+    }, 1000);
 }
 
 document.addEventListener("keydown", event => {
