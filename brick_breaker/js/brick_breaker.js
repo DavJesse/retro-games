@@ -69,8 +69,8 @@ var interval2 = setInterval(function(){
     var3 = parseInt(var2.bottom);
 
     if (brickTop > 100 && var3 > 500 && brickValue == paddleValue) {
-        conter ++;
+        counter ++;
         document.getElementById('bricks').style.display = 'none';
-        document.getElementById('counter').style.display = `score: ${counter}`;
+        document.getElementById('counter').textContent = `score: ${counter}`;
     }
 }, 100)
