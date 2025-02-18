@@ -6,7 +6,7 @@ let paddle = document.getElementById("paddle");
 let containerWidth = gameContainer.clientWidth; // 600px
 let paddleWidth = paddle.clientWidth;
 let topWall = 0;
-let outOfBounds = containerWidth;
+let outOfBounds = containerWidth + 20;
 let leftWall = -60;
 let rightWall = leftWall + containerWidth;
 
@@ -43,7 +43,7 @@ function updateBallPosition() {
 
     //**Paddle Collision (Ball hits the paddle)**
     if (
-        ballY >= 510 &&
+        ballY >= paddleY - 30 &&
         ballX >= paddleX &&
         ballX <= paddleX
     ) {
@@ -79,6 +79,9 @@ paddleHeight = 30; // Paddle height needed for collision
 // Initialize ball speed
 ballSpeedX = Math.random() > 0.5 ? 2 : -2;
 ballSpeedY = -2;
+
+// Reset paddle position to center of game container
+document.getElementById("paddle").style.left = paddleX + "px";
 }
 
 
