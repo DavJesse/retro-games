@@ -1,11 +1,23 @@
+let gameContainer = document.getElementById("game-container");
+let paddle = document.getElementById("paddle");
+let containerWidth = gameContainer.clientWidth; // 600px
+let paddleWidth = paddle.clientWidth;
 let ballX = 300;
-let ballY = 30;
-let paddleX = 300;
-let paddleY = 50; // Adjusted to ensure the paddle is at the correct position
-let paddleWidth = 150;
-let paddleHeight = 10; // Paddle height needed for collision
+let ballY = -30;
+let paddleX = (containerWidth - paddleWidth) / 2;
+let paddleY = -30; // Adjusted to ensure the paddle is at the correct position
+let paddleHeight = 30; // Paddle height needed for collision
 let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
 let ballSpeedY = -2;
+let topWall = -570;
+let bottomWall = topWall + containerWidth -20;
+let leftWall = -60;
+let rightWall = leftWall + containerWidth;
+let paddleLeftWall = paddleX;
+let paddleRightWall = paddleLeftWall + paddleWidth;
+let paddleTopWall = -30;
+
+document.getElementById("paddle").style.left = paddleX + "px";
 
 function updateBallPosition() {
     // Move ball horizontally and vertically
@@ -13,28 +25,29 @@ function updateBallPosition() {
     ballY += ballSpeedY;
 
     // **Bounce off left & right walls**
-    if (ballX <= 0 || ballX + 20 >= 600) { 
+    if (ballX <= leftWall || ballX + 20 >= rightWall) { // 20 is ball width
         ballSpeedX *= -1; // Reverse direction
     }
-
+   
     // **Bounce off the top wall**
-    if (ballY <= 0) { 
+    if (ballY <= topWall) { 
         ballSpeedY *= -1;
     }
 
-    // **Paddle Collision (Ball hits the paddle)**
+    // //**Paddle Collision (Ball hits the paddle)**
     if (
-        ballY + 20 >= paddleY &&  // Ball's bottom reaches the paddle's top
-        ballX + 20 >= paddleX &&  // Ball's right edge is past the paddle's left edge
-        ballX <= paddleX + paddleWidth // Ball's left edge is before the paddle's right edge
+        ballY + 20 >= paddleY &&
+        ballX >= paddleLeftWall &&
+        ballX <= paddleRightWall
     ) {
         ballSpeedY *= -1; // Reverse direction
-    }
-
+    } 
+    
     // **Game Over Check: Ball falls below the paddle**
-    if (ballY > 60) {  // Since container height is 60px
-        alert("Game Over!");
-        resetGame();
+    if (ballY >= bottomWall) {  // Since container height is 60px
+        ballSpeedY *= -1;
+        // alert("Game Over!");
+        // resetGame();
     }
 
     // Update ball position in the DOM
@@ -42,17 +55,18 @@ function updateBallPosition() {
     document.getElementById("ball").style.left = ballX + "px";
 }
 
-// Update ball movement every 16ms (~60 FPS)
-setInterval(updateBallPosition, 16);
 
 // **Move Paddle Left & Right**
 document.addEventListener("keydown", event => {
     if (event.key === "ArrowLeft" && paddleX > 0) {
-        paddleX -= 20;
+        paddleX -= 150;
     }
-    if (event.key === "ArrowRight" && paddleX < 450) {  // 600px - paddleWidth (150)
-        paddleX += 20;
+    if (event.key === "ArrowRight" && paddleX < 450) {
+        paddleX += 150;
     }
     
     document.getElementById("paddle").style.left = paddleX + "px";
 });
+
+// Update ball movement every 16ms (~60 FPS)
+setInterval(updateBallPosition, 16);
