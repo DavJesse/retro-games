@@ -16,12 +16,12 @@ export function loadBrickBreaker() {
   // Create ball
   window.ball = document.createElement("div"); // Make global
   ball.id = "ball";
-  paddle.appendChild(ball);
+  gameContainer.appendChild(ball);
 
   // Create bricks
-  window.bricks = document.createElement("div"); // Make global
-  bricks.id = "bricks";
-  gameContainer.appendChild(bricks);
+  // window.bricks = document.createElement("div"); // Make global
+  // bricks.id = "bricks";
+  // gameContainer.appendChild(bricks);
 
   // Load the game logic
   const script = document.createElement("script");
