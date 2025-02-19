@@ -45,7 +45,7 @@ function updateBallPosition() {
     if (
         ballY >= paddleY - 30 &&
         ballX >= paddleX &&
-        ballX <= paddleX
+        ballX <= paddleX + paddleWidth
     ) {
         ballSpeedY *= -1; // Reverse direction
     } 
@@ -62,26 +62,24 @@ function updateBallPosition() {
 }
 
 function resetGame() {
-containerWidth = gameContainer.clientWidth; // 600px
-paddleWidth = paddle.clientWidth;
-topWall = 0;
-outOfBounds = 580;
-leftWall = -60;
-rightWall = leftWall + containerWidth;
+    // Reset ball position to the center-bottom of the game container
+    ballX = (containerWidth - 20) / 2; // Center horizontally
+    ballY = 550; // Near the bottom
 
-// initialize positions of ball and paddle
-ballX = (containerWidth - 20) / 2;
-ballY = 550;
-paddleX = (containerWidth - paddleWidth) / 2;
-paddleY = 580; // Adjusted to ensure the paddle is at the correct position
-paddleHeight = 30; // Paddle height needed for collision
+    // Reset paddle position to the center
+    paddleX = (containerWidth - paddleWidth) / 2;
+    document.getElementById("paddle").style.left = paddleX + "px";
 
-// Initialize ball speed
-ballSpeedX = Math.random() > 0.5 ? 2 : -2;
-ballSpeedY = -2;
+    // Set random initial ball direction
+    ballSpeedX = Math.random() > 0.5 ? 2 : -2; // Random left or right
+    ballSpeedY = -2; // Move upwards
 
-// Reset paddle position to center of game container
-document.getElementById("paddle").style.left = paddleX + "px";
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    // Update ball position in the DOM
+    document.getElementById("ball").style.left = ballX + "px";
+    document.getElementById("ball").style.top = ballY + "px";
 }
 
 
