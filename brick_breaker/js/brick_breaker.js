@@ -43,8 +43,8 @@ function updateBallPosition() {
     //**Paddle Collision (Ball hits the paddle)**
     if (
         ballY >= paddleY - 30 &&
-        ballX >= paddleX &&
-        ballX <= paddleX + paddleWidth
+        ballX >= paddleX - (paddleWidth / 2) &&
+        ballX <= (paddleX - (paddleWidth / 2)) + paddleWidth
     ) {
         ballSpeedY *= -1; // Reverse direction
     } 
