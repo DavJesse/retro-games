@@ -16,6 +16,8 @@ let ballY = 550;
 let paddleX = (containerWidth - paddleWidth) / 2;
 let paddleY = 580; // Adjusted to ensure the paddle is at the correct position
 let paddleHeight = 30; // Paddle height needed for collision
+let paddleLeft = paddleX - (paddleWidth / 2);
+let paddleRight = paddleLeft + paddleWidth;
 
 // Initialize ball speed
 let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
@@ -42,9 +44,9 @@ function updateBallPosition() {
 
     //**Paddle Collision (Ball hits the paddle)**
     if (
-        ballY >= paddleY - 30 &&
-        ballX >= paddleX - (paddleWidth / 2) &&
-        ballX <= (paddleX - (paddleWidth / 2)) + paddleWidth
+        ballY >= (paddleY - 30) + 2 &&
+        ballX >= paddleLeft + 2 &&
+        ballX <= paddleRight + 2
     ) {
         ballSpeedY *= -1; // Reverse direction
     } 
