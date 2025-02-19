@@ -86,14 +86,14 @@ function resetGame() {
 
 // **Move Paddle Left & Right**
 document.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft" && paddleX > 0) {
-        paddleX -= 75;
+    if (event.key === "ArrowLeft" && paddleLeft > 0) {
+        paddleLeft-= 75;
     }
-    if (event.key === "ArrowRight" && paddleX < 450) {
-        paddleX += 75;
+    if (event.key === "ArrowRight" && paddleRight < 600) {
+        paddleLeft += 75;
     }
     
-    document.getElementById("paddle").style.left = paddleX + "px";
+    document.getElementById("paddle").style.left = paddleLeft + "px";
 });
 
 // Update ball movement every 16ms (~60 FPS)
