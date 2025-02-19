@@ -21,9 +21,8 @@ let paddleHeight = 30; // Paddle height needed for collision
 let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
 let ballSpeedY = -2;
 
-console.log(paddleWidth)
-
-// document.getElementById("paddle").style.left = paddleX + "px";
+// Initialize paddle position at center of game container
+document.getElementById("paddle").style.left = paddleX + "px";
 
 function updateBallPosition() {
     // Move ball horizontally and vertically
