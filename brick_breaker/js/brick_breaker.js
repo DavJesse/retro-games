@@ -1,6 +1,7 @@
 // import { brickPositions } from "./brickmaker.js";
 
 let paused = false;
+let started = false;
 let animationID = null;
 
 // Extract dimentions
@@ -52,7 +53,9 @@ function updateBallPosition() {
     let ballBounds = window.ball.getBoundingClientRect();
 
     if (
+    //   ballBounds.bottom >= paddleBounds.top &&
       ballBounds.bottom >= paddleBounds.top &&
+      ballBounds.bottom <= paddleBounds.top + (0.5 * paddleHeight) &&
       ballBounds.top <= paddleBounds.bottom &&
       ballBounds.right >= paddleBounds.left &&
       ballBounds.left <= paddleBounds.right &&
@@ -114,7 +117,8 @@ document.addEventListener("keydown", e => {
         case "KeyP":
         case "Keyp": // PAUSE OR PLAY
             paused = !paused;
-            if(!paused) { // play
+            if(!paused || !started) { // play
+                started = true;
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
                 }
@@ -128,13 +132,13 @@ document.addEventListener("keydown", e => {
         break;
         case "ArrowLeft": // PADDLE LEFT
             if(paddleX > 0) {
-                paddleX -= 75;
+                paddleX -= 15;
             }
             paddle.style.left = `${paddleX}px`;
         break;
         case "ArrowRight": // PADDLE RIGHT
             if(paddleX < 450) {
-            paddleX += 75;
+            paddleX += 15;
             }
             paddle.style.left = `${paddleX}px`;
         break;
@@ -143,4 +147,6 @@ document.addEventListener("keydown", e => {
 
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);
-requestAnimationFrame(updateBallPosition);
+function init() {
+    requestAnimationFrame(updateBallPosition);
+}
