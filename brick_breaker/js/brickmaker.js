@@ -5,12 +5,13 @@ var crackedBricks = ["brick yellow cracked", "brick red svg-cracked", "brick yel
 var explosiveBricks = ["brick explosive"];
 
 class Brick {
-   constructor(type, top, bottom, left, right) {
+   constructor(type, top, bottom, left, right,isbreakdestroyed) {
       this.type = type;
       this.top = top;
       this.bottom = bottom;
       this.left = left;
       this.right = right;
+      this.isbreakdestroyed=isbreakdestroyed;
    }
 }
 
@@ -57,7 +58,7 @@ function createLevelOneBricks(brickContainer) {
       brickContainer.appendChild(brickElement);
 
       let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right));
+      brickPositions.push(new Brick(brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right,false));
 
       totalBricks++;
    }
