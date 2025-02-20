@@ -24,7 +24,9 @@ export function loadBrickBreaker() {
   script1.src = "brick_breaker/js/brick_breaker.js";
   script2.src = "brick_breaker/js/brick_ball_collision.js";
   script1.defer = true;
+  script1.type = "module";
   script2.defer = true;
+  script2.type = "module";
   document.body.appendChild(script1);
   document.body.appendChild(script1);
 }
