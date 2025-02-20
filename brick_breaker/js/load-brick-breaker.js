@@ -24,8 +24,12 @@ export function loadBrickBreaker() {
   // gameContainer.appendChild(bricks);
 
   // Load the game logic
-  const script = document.createElement("script");
-  script.src = "brick_breaker/js/brick_breaker.js";
-  script.defer = true;
-  document.body.appendChild(script);
+  const script1 = document.createElement("script");
+  const script2 = document.createElement("script");
+  script1.src = "brick_breaker/js/brick_breaker.js";
+  script2.src = "brick_breaker/js/brick_ball_collision.js";
+  script1.defer = true;
+  script2.defer = true;
+  document.body.appendChild(script1);
+  document.body.appendChild(script1);
 }
