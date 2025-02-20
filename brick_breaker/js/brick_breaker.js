@@ -1,8 +1,11 @@
+let paused = false;
+let animationID = null;
+
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
 let paddle = document.getElementById("paddle");
 
-// Determine widths of varables
+// Determine widths of variables
 let containerWidth = gameContainer.clientWidth; // 600px
 let paddleWidth = paddle.clientWidth;
 let topWall = 0;
@@ -24,7 +27,7 @@ let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
 let ballSpeedY = -2;
 
 // Initialize paddle position at center of game container
-document.getElementById("paddle").style.left = paddleX + "px";
+paddle.style.left = paddleX + "px";
 
 function updateBallPosition() {
     // Move ball horizontally and vertically
@@ -42,24 +45,41 @@ function updateBallPosition() {
         resetGame();
     }
 
-    //**Paddle Collision (Ball hits the paddle)**
+    // paddle collision
+    paddleBounds = paddle.getBoundingClientRect();
+    ballBounds = window.ball.getBoundingClientRect();
     if (
-        ballY >= (paddleY - 30) + 2 &&
-        ballX >= paddleLeft + 2 &&
-        ballX <= paddleRight + 2
+      ballBounds.bottom >= paddleBounds.top &&
+      ballBounds.top <= paddleBounds.bottom &&
+      ballBounds.right >= paddleBounds.left &&
+      ballBounds.left <= paddleBounds.right &&
+      ballSpeedY > 0  // Only bounce when ball is moving downward
     ) {
-        ballSpeedY *= -1; // Reverse direction
-    } 
+      ballSpeedY *= -1; // Reverse vertical direction
+      
+      // angle variation based on where ball hits paddle
+        if(ballBounds.right == paddleBounds.left || ballBounds.left == paddleBounds.right) {
+            ballSpeedX *= -1;
+        } 
+    }
+    // if (
+    //     ballY >= (paddleY - 30) + 2 &&
+    //     ballX >= paddleLeft + 2 &&
+    //     ballX <= paddleRight + 2
+    // ) {
+    //     ballSpeedY *= -1; // Reverse direction
+    // } 
     
     // **Game Over Check: Ball falls below the paddle**
     if (ballY <= topWall) {  // Since container height is 60px
         ballSpeedY *= -1;
-        
     }
 
     // Update ball position in the DOM
-    document.getElementById("ball").style.top = ballY + "px";
-    document.getElementById("ball").style.left = ballX + "px";
+    window.ball.style.top = ballY + "px";
+    window.ball.style.left = ballX + "px";
+
+    animationID = requestAnimationFrame(updateBallPosition);
 }
 
 function resetGame() {
@@ -79,22 +99,44 @@ function resetGame() {
     ballY += ballSpeedY;
 
     // Update ball position in the DOM
-    document.getElementById("ball").style.left = ballX + "px";
-    document.getElementById("ball").style.top = ballY + "px";
+    window.ball.style.left = ballX + "px";
+    window.ball.style.top = ballY + "px";
 }
 
 
-// **Move Paddle Left & Right**
-document.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft" && paddleLeft > 0) {
-        paddleLeft-= 75;
+document.addEventListener("keydown", e => {
+    switch(e.code) {
+        case "KeyP":
+        case "Keyp": // PAUSE OR PLAY
+            paused = !paused;
+            if(!paused) { // play
+                if (!animationID) {
+                    animationID = requestAnimationFrame(updateBallPosition);
+                }
+            } else { // pause
+                // cancel the current animation frame
+                if (animationID) {
+                    cancelAnimationFrame(animationID);
+                    animationID = null;
+                }
+            }
+        break;
+        case "ArrowLeft": // PADDLE LEFT
+            if(paddleX > 0) {
+                paddleX -= 75;
+            }
+            paddle.style.left = `${paddleX}px`;
+        break;
+        case "ArrowRight": // PADDLE RIGHT
+            if(paddleX < 450) {
+            paddleX += 75;
+            }
+            paddle.style.left = `${paddleX}px`;
+        break;
     }
-    if (event.key === "ArrowRight" && paddleRight < 600) {
-        paddleLeft += 75;
-    }
-    
-    document.getElementById("paddle").style.left = paddleLeft + "px";
 });
 
+
 // Update ball movement every 16ms (~60 FPS)
-setInterval(updateBallPosition, 16);
+// setInterval(updateBallPosition, 16);
+requestAnimationFrame(updateBallPosition);
