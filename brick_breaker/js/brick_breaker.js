@@ -69,13 +69,6 @@ function updateBallPosition() {
             ballSpeedX *= -1;
         } 
     }
-    // if (
-    //     ballY >= (paddleY - 30) + 2 &&
-    //     ballX >= paddleLeft + 2 &&
-    //     ballX <= paddleRight + 2
-    // ) {
-    //     ballSpeedY *= -1; // Reverse direction
-    // } 
     
     // **Game Over Check: Ball falls below the paddle**
     if (ballY <= topWall) {  // Since container height is 60px
@@ -133,13 +126,13 @@ document.addEventListener("keydown", e => {
         break;
         case "ArrowLeft": // PADDLE LEFT
             if(paddleX > 0) {
-                paddleX -= 15;
+                paddleX -= 75;
             }
             paddle.style.left = `${paddleX}px`;
         break;
         case "ArrowRight": // PADDLE RIGHT
             if(paddleX < 450) {
-            paddleX += 15;
+            paddleX += 75;
             }
             paddle.style.left = `${paddleX}px`;
         break;
