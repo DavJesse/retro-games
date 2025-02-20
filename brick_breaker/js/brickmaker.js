@@ -5,7 +5,7 @@ var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick
 
 class Brick {
    #isBrickDestroyed;
-   constructor(brickid, type, top, bottom, left, right, isbrickdestroyed = false, numberofhits = 0) {
+   constructor(brickid, type, top, bottom, left, right, isbrickdestroyed = false, numberofhits = 2) {
       this.brickid = brickid;
       this.type = type;
       this.top = top;
@@ -99,3 +99,4 @@ function createLevelOneBricks(brickContainer, maxCrackBricks, maxLifeBricks, max
       totalBricks++;
    }
 }
+console.log(brickPositions)

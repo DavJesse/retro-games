@@ -1,4 +1,5 @@
-// import { brickPositions } from "./brickmaker.js";
+import { brickPositions } from "./brickmaker.js";
+import { BrickBallCollision } from "./brick_ball_collision.js";
 
 let paused = false;
 let started = false;
@@ -81,7 +82,7 @@ function updateBallPosition() {
         ballSpeedY *= -1;
     }
 
-    // BrickBallCollision(brickPositions)
+    BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, brickPositions)
 
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
@@ -144,6 +145,8 @@ document.addEventListener("keydown", e => {
         break;
     }
 });
+
+
 
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);

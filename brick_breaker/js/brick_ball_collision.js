@@ -1,11 +1,10 @@
-function BrickBallCollision(bricks) {
+export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks) {
     let ballLeft = ballX;
     let ballRight = ballX + 20;
     let ballTop = ballY;
     let ballBottom = ballY + 20;
     
-    bricks.forEach((brickObj, index) => {
-        let brick = brickObj.brick;
+    bricks.forEach((brick, index) => {
         let brickLeft = brick.left;
         let brickRight = brick.left + (560 / 7) - 10; // Approximate width from grid
         let brickTop = brick.top;
@@ -19,7 +18,7 @@ function BrickBallCollision(bricks) {
             ballTop < brickBottom
         ) {
             // Ball hit the brick
-            brick.count--;
+            brick.numberofhits--;
             
             // Determine bounce direction
             if (ballBottom - ballSpeedY <= brickTop || ballTop - ballSpeedY >= brickBottom) {
@@ -29,8 +28,9 @@ function BrickBallCollision(bricks) {
             }
             
             // Remove brick if count reaches 0
-            if (brick.count <= 0) {
-                document.getElementById(`brick-${brickObj.ID}`).style.visibility = "hidden";
+            if (brick.numberofhits <= 1) {
+                // document.getElementById(`${brick.brickid}`).style.visibility = "hidden";
+                brick.Destroy();
                 bricks.splice(index, 1); // Remove from array
             }
         }
