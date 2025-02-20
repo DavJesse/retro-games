@@ -1,3 +1,5 @@
+// import { brickPositions } from "./brickmaker.js";
+
 let paused = false;
 let started = false;
 let animationID = null;
@@ -15,7 +17,7 @@ let leftWall = -60;
 let rightWall = leftWall + containerWidth;
 
 // initialize positions of ball and paddle
-let ballX = (containerWidth - 20) / 2;
+let ballX = ((containerWidth - 20) / 2) - 60;
 let ballY = 550;
 let paddleX = (containerWidth - paddleWidth) / 2;
 let paddleY = 580; // Adjusted to ensure the paddle is at the correct position
@@ -47,8 +49,9 @@ function updateBallPosition() {
     }
 
     // paddle collision
-    paddleBounds = paddle.getBoundingClientRect();
-    ballBounds = window.ball.getBoundingClientRect();
+    let paddleBounds = paddle.getBoundingClientRect();
+    let ballBounds = window.ball.getBoundingClientRect();
+
     if (
     //   ballBounds.bottom >= paddleBounds.top &&
       ballBounds.bottom >= paddleBounds.top &&
@@ -77,6 +80,8 @@ function updateBallPosition() {
     if (ballY <= topWall) {  // Since container height is 60px
         ballSpeedY *= -1;
     }
+
+    // BrickBallCollision(brickPositions)
 
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
@@ -139,7 +144,6 @@ document.addEventListener("keydown", e => {
         break;
     }
 });
-
 
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);
