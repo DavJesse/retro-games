@@ -2,7 +2,7 @@
 let gameContainer = document.getElementById("game-container");
 let paddle = document.getElementById("paddle");
 
-// Determine widths of varables
+// Determine widths of variables
 let containerWidth = gameContainer.clientWidth; // 600px
 let paddleWidth = paddle.clientWidth;
 let topWall = 0;
@@ -42,19 +42,34 @@ function updateBallPosition() {
         resetGame();
     }
 
-    //**Paddle Collision (Ball hits the paddle)**
+    // paddle collision
+    paddleBounds = paddle.getBoundingClientRect();
+    ballBounds = window.ball.getBoundingClientRect();
     if (
-        ballY >= (paddleY - 30) + 2 &&
-        ballX >= paddleLeft + 2 &&
-        ballX <= paddleRight + 2
+      ballBounds.bottom >= paddleBounds.top &&
+      ballBounds.top <= paddleBounds.bottom &&
+      ballBounds.right >= paddleBounds.left &&
+      ballBounds.left <= paddleBounds.right &&
+      ballSpeedY > 0  // Only bounce when ball is moving downward
     ) {
-        ballSpeedY *= -1; // Reverse direction
-    } 
+      ballSpeedY *= -1; // Reverse vertical direction
+      
+      // angle variation based on where ball hits paddle
+        if(ballBounds.right == paddleBounds.left || ballBounds.left == paddleBounds.right) {
+            ballSpeedX *= -1;
+        } 
+    }
+    // if (
+    //     ballY >= (paddleY - 30) + 2 &&
+    //     ballX >= paddleLeft + 2 &&
+    //     ballX <= paddleRight + 2
+    // ) {
+    //     ballSpeedY *= -1; // Reverse direction
+    // } 
     
     // **Game Over Check: Ball falls below the paddle**
     if (ballY <= topWall) {  // Since container height is 60px
         ballSpeedY *= -1;
-        
     }
 
     // Update ball position in the DOM
