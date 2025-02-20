@@ -1,3 +1,4 @@
+
 export function loadBrickBreaker() {
   const scoreBoard = document.getElementById("score-board");
   const gameContainer = document.getElementById("game-container");
@@ -12,16 +13,10 @@ export function loadBrickBreaker() {
   window.paddle = document.createElement("div"); // Make global
   paddle.id = "paddle";
   gameContainer.appendChild(paddle);
-
   // Create ball
   window.ball = document.createElement("div"); // Make global
   ball.id = "ball";
   gameContainer.appendChild(ball);
-
-  // Create bricks
-  // window.bricks = document.createElement("div"); // Make global
-  // bricks.id = "bricks";
-  // gameContainer.appendChild(bricks);
 
   // Load the game logic
   const script1 = document.createElement("script");
