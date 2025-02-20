@@ -1,16 +1,18 @@
 var normalBricks = ["brick red", "brick orange", "brick yellow", "brick green", "brick blue"];
 var hardBricks = ["brick steel cracked", "brick iron", "brick titanium", "brick platinum", "brick steel", "brick chrome", "brick metallic"];
 var lifeBricks = ["brick life-up"];
-var crackedBricks = ["brick yellow cracked", "brick red svg-cracked", "brick yellow svg-cracked", "brick green svg-cracked", "brick orange svg-cracked", "brick blue svg-cracked"];
+var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick green svg-cracked", "brick orange svg-cracked", "brick blue svg-cracked"];
 var explosiveBricks = ["brick explosive"];
 
 class Brick {
-   constructor(type, top, bottom, left, right,isbreakdestroyed) {
+   constructor(brickid,type, top, bottom, left, right,isbreakdestroyed,opacity=1) {
+      this.brickid=brickid;
       this.type = type;
       this.top = top;
       this.bottom = bottom;
       this.left = left;
       this.right = right;
+      this.opacity=opacity
       this.isbreakdestroyed=isbreakdestroyed;
    }
 }
@@ -42,6 +44,8 @@ function createLevelOneBricks(brickContainer) {
    let brickTypes = [...normalBricks, ...crackedBricks, lifeBricks[0]];
    let totalBricks = 0;
    let lifeBrickCount = 0;
+   let  crackedBrickscount=0;
+   const maxCrackBricks=5;
    const maxLifeBricks = 3;
    const maxBricks = 35;
 
@@ -52,16 +56,22 @@ function createLevelOneBricks(brickContainer) {
          if (lifeBrickCount >= maxLifeBricks) continue;
          lifeBrickCount++;
       }
+      if(crackedBricks.includes(brickType)){
+         if(crackedBrickscount>=maxCrackBricks)continue;
+            crackedBrickscount++
+      }
 
       let brickElement = document.createElement("div");
       brickElement.setAttribute("class", brickType);
+      brickElement.setAttribute("id",totalBricks)
       brickContainer.appendChild(brickElement);
 
       let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right,false));
+      brickPositions.push(new Brick(totalBricks,brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right,false));
 
       totalBricks++;
    }
 
    return brickTypes;
 }
+console.log(brickPositions)
