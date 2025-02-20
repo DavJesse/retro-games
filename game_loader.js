@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (game === "brickBreaker") {
             const { loadBrickBreaker } = await import("./brick_breaker/js/load-brick-breaker.js");
             loadBrickBreaker();
+            const { generateBricks } = await import("./brick_breaker/js/brickmaker.js");
+            generateBricks()
         } else {
             console.error("unknown game: ", game);
         }
