@@ -1,19 +1,44 @@
 var normalBricks = ["brick red", "brick orange", "brick yellow", "brick green", "brick blue"];
-var hardBricks = ["brick steel cracked", "brick iron", "brick titanium", "brick platinum", "brick steel", "brick chrome", "brick metallic"];
+var hardBricks = ["brick steel", "brick chrome", "brick metallic"];
 var lifeBricks = ["brick life-up"];
 var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick green svg-cracked", "brick orange svg-cracked", "brick blue svg-cracked"];
-var explosiveBricks = ["brick explosive"];
 
 class Brick {
-   constructor(brickid,type, top, bottom, left, right,isbreakdestroyed,opacity=1) {
-      this.brickid=brickid;
+   #isBrickDestroyed;
+   constructor(brickid, type, top, bottom, left, right, isbrickdestroyed = false, numberofhits = 0) {
+      this.brickid = brickid;
       this.type = type;
       this.top = top;
       this.bottom = bottom;
       this.left = left;
       this.right = right;
-      this.opacity=opacity
-      this.isbreakdestroyed=isbreakdestroyed;
+      this.#isBrickDestroyed = isbrickdestroyed;
+      this.numberofhits = numberofhits;
+   }
+
+   get isBrickDestroyed() {
+      return this.#isBrickDestroyed;
+   }
+
+   set isBrickDestroyed(value) {
+      this.#isBrickDestroyed = value;
+   }
+
+   Destroy() {
+      let brick = document.getElementById(this.brickid);
+      
+      if (!brick) return; 
+      if (!hardBricks.includes(this.type)) {
+         if (this.numberofhits > 0) {
+            this.isBrickDestroyed = true;
+            brick.classList.add("brick-destroyed");
+         }
+      } else {
+         if (this.numberofhits >= 2) {
+            this.isBrickDestroyed = true;
+            brick.classList.add("brick-destroyed");
+         }
+      }
    }
 }
 
@@ -36,42 +61,41 @@ export function generateBricks(level = 1) {
    gameContainer.appendChild(brickContainer);
 
    if (level === 1) {
-      createLevelOneBricks(brickContainer);
+      createLevelOneBricks(brickContainer, 10, 2, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
    }
 }
 
-function createLevelOneBricks(brickContainer) {
-   let brickTypes = [...normalBricks, ...crackedBricks, lifeBricks[0]];
+function createLevelOneBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
    let totalBricks = 0;
    let lifeBrickCount = 0;
-   let  crackedBrickscount=0;
-   const maxCrackBricks=5;
-   const maxLifeBricks = 3;
-   const maxBricks = 35;
+   let crackedBrickscount = 0;
+   let hardbrickCount = 0;
+
 
    while (totalBricks < maxBricks) {
-      let brickType = getRandomBrick(brickTypes);
+      let brickType = getRandomBrick(Allbricks);
 
       if (brickType === lifeBricks[0]) {
          if (lifeBrickCount >= maxLifeBricks) continue;
          lifeBrickCount++;
       }
-      if(crackedBricks.includes(brickType)){
-         if(crackedBrickscount>=maxCrackBricks)continue;
-            crackedBrickscount++
+      if (crackedBricks.includes(brickType)) {
+         if (crackedBrickscount >= maxCrackBricks) continue;
+         crackedBrickscount++
       }
 
+      if (hardBricks.includes(brickType)) {
+         if (hardbrickCount >= maxhardbricks) continue;
+         hardbrickCount++
+      }
       let brickElement = document.createElement("div");
       brickElement.setAttribute("class", brickType);
-      brickElement.setAttribute("id",totalBricks)
+      brickElement.setAttribute("id", totalBricks)
       brickContainer.appendChild(brickElement);
 
       let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(totalBricks,brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right,false));
+      brickPositions.push(new Brick(totalBricks, brickType, brickDimensions.top, brickDimensions.bottom, brickDimensions.left, brickDimensions.right, false));
 
       totalBricks++;
    }
-
-   return brickTypes;
 }
-console.log(brickPositions)
