@@ -1,3 +1,6 @@
+let paused = false;
+let animationID = null;
+
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
 let paddle = document.getElementById("paddle");
@@ -24,7 +27,7 @@ let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
 let ballSpeedY = -2;
 
 // Initialize paddle position at center of game container
-document.getElementById("paddle").style.left = paddleX + "px";
+paddle.style.left = paddleX + "px";
 
 function updateBallPosition() {
     // Move ball horizontally and vertically
@@ -73,8 +76,10 @@ function updateBallPosition() {
     }
 
     // Update ball position in the DOM
-    document.getElementById("ball").style.top = ballY + "px";
-    document.getElementById("ball").style.left = ballX + "px";
+    window.ball.style.top = ballY + "px";
+    window.ball.style.left = ballX + "px";
+
+    animationID = requestAnimationFrame(updateBallPosition);
 }
 
 function resetGame() {
@@ -94,22 +99,44 @@ function resetGame() {
     ballY += ballSpeedY;
 
     // Update ball position in the DOM
-    document.getElementById("ball").style.left = ballX + "px";
-    document.getElementById("ball").style.top = ballY + "px";
+    window.ball.style.left = ballX + "px";
+    window.ball.style.top = ballY + "px";
 }
 
 
-// **Move Paddle Left & Right**
-document.addEventListener("keydown", event => {
-    if (event.key === "ArrowLeft" && paddleX > 0) {
-        paddleX -= 75;
+document.addEventListener("keydown", e => {
+    switch(e.code) {
+        case "KeyP":
+        case "Keyp": // PAUSE OR PLAY
+            paused = !paused;
+            if(!paused) { // play
+                if (!animationID) {
+                    animationID = requestAnimationFrame(updateBallPosition);
+                }
+            } else { // pause
+                // cancel the current animation frame
+                if (animationID) {
+                    cancelAnimationFrame(animationID);
+                    animationID = null;
+                }
+            }
+        break;
+        case "ArrowLeft": // PADDLE LEFT
+            if(paddleX > 0) {
+                paddleX -= 75;
+            }
+            paddle.style.left = `${paddleX}px`;
+        break;
+        case "ArrowRight": // PADDLE RIGHT
+            if(paddleX < 450) {
+            paddleX += 75;
+            }
+            paddle.style.left = `${paddleX}px`;
+        break;
     }
-    if (event.key === "ArrowRight" && paddleX < 450) {
-        paddleX += 75;
-    }
-    
-    document.getElementById("paddle").style.left = paddleX + "px";
 });
 
+
 // Update ball movement every 16ms (~60 FPS)
-setInterval(updateBallPosition, 16);
+// setInterval(updateBallPosition, 16);
+requestAnimationFrame(updateBallPosition);
