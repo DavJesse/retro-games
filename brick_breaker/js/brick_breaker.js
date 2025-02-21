@@ -117,9 +117,9 @@ function resetGame() {
 
 
 document.addEventListener("keydown", e => {
-    switch(e.code) {
-        case "KeyP":
-        case "Keyp": // PAUSE OR PLAY
+    switch(e.key) {
+        case " ":
+        case " ": // PAUSE OR PLAY
             paused = !paused;
             if(!paused || !started) { // play
                 started = true;
