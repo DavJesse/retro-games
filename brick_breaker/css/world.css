@@ -5,3 +5,27 @@
     position: relative;
     margin: auto;
 }
+
+#score-board {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.stat-item {
+    display: flex;
+    align-items: center;
+}
+.stat-label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+.stat-value {
+    background-color: #555;
+    padding: 2px 8px;
+    border-radius: 3px;
+}
