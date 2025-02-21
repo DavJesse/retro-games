@@ -4,11 +4,14 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
     let ballTop = ballY;
     let ballBottom = ballY + 20;
     
-    bricks.forEach((brick, index) => {
+    let collided = false;
+    
+    for (let i = bricks.length - 1; i >= 0; i--) {
+        const brick = bricks[i];
         let brickLeft = brick.left;
-        let brickRight = brick.left + (560 / 7) - 10; // Approximate width from grid
+        let brickRight = brick.right;
         let brickTop = brick.top;
-        let brickBottom = brick.top + 25;
+        let brickBottom = brick.bottom;
         
         // Check if ball collides with brick
         if (
@@ -19,9 +22,18 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
         ) {
             // Ball hit the brick
             brick.numberofhits--;
+            collided = true;
             
             // Determine bounce direction
-            if (ballBottom - ballSpeedY <= brickTop || ballTop - ballSpeedY >= brickBottom) {
+            let overlapLeft = ballRight - brickLeft;
+            let overlapRight = brickRight - ballLeft;
+            let overlapTop = ballBottom - brickTop;
+            let overlapBottom = brickBottom - ballTop;
+
+            // Find the smallest overlap
+            let minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+            if (minOverlap === overlapTop || minOverlap === overlapBottom) {
                 ballSpeedY *= -1; // Bounce vertically
             } else {
                 ballSpeedX *= -1; // Bounce horizontally
@@ -29,10 +41,15 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
             
             // Remove brick if count reaches 0
             if (brick.numberofhits <= 1) {
-                // document.getElementById(`${brick.brickid}`).style.visibility = "hidden";
                 brick.Destroy();
-                bricks.splice(index, 1); // Remove from array
+                console.log(`array index: ${i}`)
+                console.log(brick)
+                bricks.splice(i, 1); // Remove from array
             }
+            
+            break; // Exit the loop after handling one collision
         }
-    });
+    }
+    
+    return collided ? { ballSpeedX, ballSpeedY } : null;
 }

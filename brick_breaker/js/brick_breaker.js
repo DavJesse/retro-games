@@ -75,7 +75,11 @@ function updateBallPosition() {
         ballSpeedY *= -1;
     }
 
-    BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, brickPositions)
+    const collision = BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, brickPositions);
+    if (collision) {
+        ballSpeedX = collision.ballSpeedX;
+        ballSpeedY = collision.ballSpeedY;
+    }
 
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
