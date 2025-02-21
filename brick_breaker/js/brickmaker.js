@@ -60,7 +60,7 @@ var getRandomBrick = (brickList) => {
    return brickList[randomIndex];
 };
 
-export function generateBricks(level = 1) {
+export function generateBricks(level = 5) {
    var gameContainer = document.getElementById("brick-wrapper");
    if (!gameContainer) {
       console.error("Game container not found!");
@@ -72,11 +72,19 @@ export function generateBricks(level = 1) {
    gameContainer.appendChild(brickContainer);
 
    if (level === 1) {
-      createLevelOneBricks(brickContainer, 10, 2, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
+      createBricks(brickContainer, 10, 2, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
+   }else if (level === 2){
+      createBricks(brickContainer,10,2,8,35,[...normalBricks,...lifeBricks,...crackedBricks,...hardBricks])
+   }else if(level === 3){
+      createBricks(brickContainer,10,3,10,35,[...lifeBricks,...normalBricks,crackedBricks,...hardBricks])
+   }else if(level === 4){
+      createBricks(brickContainer,10,3,12,35,[...lifeBricks,...hardBricks,...crackedBricks,...normalBricks])
+   }else{
+      createBricks(brickContainer,9,3,15,35,[...lifeBricks,...hardBricks,...normalBricks,...crackedBricks])
    }
 }
 
-function createLevelOneBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
+function createBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
    let totalBricks = 0;
    let lifeBrickCount = 0;
    let crackedBrickscount = 0;
