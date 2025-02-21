@@ -4,6 +4,7 @@ import { BrickBallCollision } from "./brick_ball_collision.js";
 let paused = false;
 let started = false;
 let animationID = null;
+let gameSpeed = 4;
 
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
@@ -27,7 +28,7 @@ let paddleLeft = paddleX - (paddleWidth / 2);
 let paddleRight = paddleLeft + paddleWidth;
 
 // Initialize ball speed
-let ballSpeedX = Math.random() > 0.5 ? 4 : -4;
+let ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed;
 let ballSpeedY = -4;
 
 // Initialize paddle position at center of game container
@@ -104,7 +105,7 @@ function resetGame() {
     document.getElementById("paddle").style.left = paddleX + "px";
 
     // Set random initial ball direction
-    ballSpeedX = Math.random() > 0.5 ? 4 : -4; // Random left or right
+    ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
     ballSpeedY = -4; // Move upwards
 
     ballX += ballSpeedX;
@@ -118,7 +119,7 @@ function resetGame() {
 
 document.addEventListener("keydown", e => {
     switch(e.key) {
-        case " ":
+        // case " ":
         case " ": // PAUSE OR PLAY
             paused = !paused;
             if(!paused || !started) { // play
