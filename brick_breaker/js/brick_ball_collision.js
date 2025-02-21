@@ -8,10 +8,10 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
     
     for (let i = bricks.length - 1; i >= 0; i--) {
         const brick = bricks[i];
-        let brickLeft = brick.left;
-        let brickRight = brick.right;
-        let brickTop = brick.top;
-        let brickBottom = brick.bottom;
+        let brickLeft = brick.left - 400;
+        let brickRight = brick.right - 400;
+        let brickTop = brick.top - 25;
+        let brickBottom = brick.bottom - 25;
         
         // Check if ball collides with brick
         if (
