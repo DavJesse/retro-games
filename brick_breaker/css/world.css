@@ -4,6 +4,16 @@
     background-color: #000000;
     position: relative;
     margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#brick-wrapper {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: flex-start; /* Align bricks at the top */
+    width: 100%;
 }
 
 #score-board {
