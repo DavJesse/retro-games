@@ -13,13 +13,30 @@
 </head>
 <body>
     
-    <div id = "score-board" style="display: none;"></div>
+    <div id="score-board" style="display: none;visibility: hidden;" ></div>
+
 
     <div id="game-selection">
         <h1>Choose a Game</h1>
         <button onclick="loadGame('brickBreaker')">Brick Breaker</button>
     </div>
- <div id="game-container" style="display: none;"></div>
+      
+ <div id="game-container" style="display: none;">
+    <div id="score-board">
+        <div class="stat-item">
+            <span class="stat-label">SCORE:</span>
+            <span id="scores" class="stat-value">0</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">LIVES:</span>
+            <span id="lives" class="stat-value">3</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">LEVEL:</span>
+            <span id="level" class="stat-value">1</span>
+        </div>
+    </div>
+ </div>
     <script  type="module" src="game_loader.js"></script>
     <script>
         function loadGame(game) {

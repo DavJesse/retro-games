@@ -5,8 +5,9 @@ var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick
 
 class Brick {
    #isBrickDestroyed;
-   constructor(brickid, top, bottom, left, right, isbrickdestroyed = false, numberofhits = 1) {
+   constructor(brickid,bricktype, top, bottom, left, right, isbrickdestroyed = false, numberofhits = 1) {
       this.brickid = brickid;
+      this.bricktype=bricktype;
       this.top = top;
       this.bottom = bottom;
       this.left = left;
@@ -25,13 +26,31 @@ class Brick {
 
    Destroy() {
       let brick = document.getElementById(this.brickid);
-      
-      if (!brick) return; 
-         if (this.numberofhits === 0) {
-            this.isBrickDestroyed = true;
-            brick.classList.add("brick-destroyed");
+
+      if (!brick) return;
+
+      if (this.numberofhits === 0) {
+         this.isBrickDestroyed = true;
+         brick.classList.add("brick-destroyed");
+
+         let scoreElement = document.getElementById("scores");
+         if (!scoreElement) return;
+
+         let currentScore = parseInt(scoreElement.textContent) || 0;
+         let points = 0;
+           
+         if (normalBricks.includes(this.bricktype)) {
+            points = 50;
+         } else if (hardBricks.includes(this.bricktype)) {
+            points = 100;
+         } else if (crackedBricks.includes(this.bricktype)) {
+            points = 25;
          }
+
+         scoreElement.textContent = currentScore + points;
+      }
    }
+
 }
 
 export var brickPositions = [];
@@ -92,7 +111,7 @@ function createLevelOneBricks(brickContainer, maxCrackBricks, maxLifeBricks, max
       }
 
       let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(totalBricks,parseInt(brickDimensions.top), parseInt(brickDimensions.bottom), parseInt(brickDimensions.left), parseInt(brickDimensions.right), false,maxnumberofhit));
+      brickPositions.push(new Brick(totalBricks,brickType,parseInt(brickDimensions.top), parseInt(brickDimensions.bottom), parseInt(brickDimensions.left), parseInt(brickDimensions.right), false,maxnumberofhit));
 
       totalBricks++;
    }
