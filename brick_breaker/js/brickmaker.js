@@ -60,7 +60,7 @@ var getRandomBrick = (brickList) => {
    return brickList[randomIndex];
 };
 
-export function generateBricks(level = 5) {
+export function generateBricks(level = 1) {
    var gameContainer = document.getElementById("brick-wrapper");
    if (!gameContainer) {
       console.error("Game container not found!");
