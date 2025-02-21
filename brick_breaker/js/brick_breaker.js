@@ -27,8 +27,8 @@ let paddleLeft = paddleX - (paddleWidth / 2);
 let paddleRight = paddleLeft + paddleWidth;
 
 // Initialize ball speed
-let ballSpeedX = Math.random() > 0.5 ? 2 : -2;
-let ballSpeedY = -2;
+let ballSpeedX = Math.random() > 0.5 ? 4 : -4;
+let ballSpeedY = -4;
 
 // Initialize paddle position at center of game container
 paddle.style.left = paddleX + "px";
@@ -81,6 +81,12 @@ function updateBallPosition() {
         ballSpeedY = collision.ballSpeedY;
     }
 
+    // Reset game when player wins
+    // if (brickPositions.length === 0) {
+    //     alert("You Won!");
+    //     resetGame();
+    // }
+
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
     window.ball.style.left = ballX + "px";
@@ -98,8 +104,8 @@ function resetGame() {
     document.getElementById("paddle").style.left = paddleX + "px";
 
     // Set random initial ball direction
-    ballSpeedX = Math.random() > 0.5 ? 2 : -2; // Random left or right
-    ballSpeedY = -2; // Move upwards
+    ballSpeedX = Math.random() > 0.5 ? 4 : -4; // Random left or right
+    ballSpeedY = -4; // Move upwards
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -111,9 +117,9 @@ function resetGame() {
 
 
 document.addEventListener("keydown", e => {
-    switch(e.code) {
-        case "KeyP":
-        case "Keyp": // PAUSE OR PLAY
+    switch(e.key) {
+        case " ":
+        case " ": // PAUSE OR PLAY
             paused = !paused;
             if(!paused || !started) { // play
                 started = true;
