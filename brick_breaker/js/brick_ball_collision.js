@@ -9,7 +9,7 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
     for (let i = bricks.length - 1; i >= 0; i--) {
         const brick = bricks[i];
         let brickLeft = brick.left - 400;
-        let brickRight = brick.right - 400;
+        let brickRight = brick.right - 390;
         let brickTop = brick.top - 50;
         let brickBottom = brick.bottom - 40;
         
@@ -29,21 +29,23 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
             let overlapRight = brickRight - ballLeft;
             let overlapTop = ballBottom - brickTop;
             let overlapBottom = brickBottom - ballTop;
-
+            
             // Find the smallest overlap
             let minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
-
+            
             if (minOverlap === overlapTop || minOverlap === overlapBottom) {
                 ballSpeedY *= -1; // Bounce vertically
             } else {
+                console.log(`left border: ${brickLeft}`)
+                console.log(`right border: ${brickRight}`)
                 ballSpeedX *= -1; // Bounce horizontally
             }
             
             // Remove brick if count reaches 0
             if (brick.numberofhits <= 1) {
                 brick.Destroy();
-                console.log(`array index: ${i}`)
-                console.log(brick)
+                // console.log(`array index: ${i}`)
+                // console.log(brick)
                 bricks.splice(i, 1); // Remove from array
             }
             

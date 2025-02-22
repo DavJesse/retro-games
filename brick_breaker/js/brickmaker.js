@@ -118,10 +118,22 @@ function createBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbric
          maxnumberofhit=1
       }
 
-      let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(totalBricks,brickType,parseInt(brickDimensions.top), parseInt(brickDimensions.bottom), parseInt(brickDimensions.left), parseInt(brickDimensions.right), false,maxnumberofhit));
+      requestAnimationFrame(() => {
+         setTimeout(() => {
+            let brickDimensions = brickElement.getBoundingClientRect();
+            brickPositions.push(new Brick(
+               totalBricks, brickType,
+               Math.round(brickDimensions.top), 
+               Math.round(brickDimensions.bottom), 
+               Math.round(brickDimensions.left), 
+               Math.round(brickDimensions.right), 
+               false, maxnumberofhit
+            ));
+         }, 0);
+      });
+      
 
       totalBricks++;
    }
-   console.log(brickPositions)
+   // console.log(brickPositions)
 }
