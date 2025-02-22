@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box; /* Ensures padding/border don’t affect width */
+}
+
+#brick-wrapper {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start; /* Align bricks at the top */
+  width: 100%;
+}
+
+
 #brick-container {
     width: 560px;
     display: grid;
@@ -6,6 +18,8 @@
     padding: 20px;
     position: relative;
     top: 50px;
+    gap: 2px;
+    flex-wrap: wrap;
   }
   
   .brick {
