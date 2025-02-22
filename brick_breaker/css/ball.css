@@ -1,11 +1,12 @@
-#ball {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    position: absolute;
-    top: 0px;
-    background-color: #ffffff;
-    margin: auto;
-    margin-left: 60px;
-    
-}
+    #ball {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        position: absolute;
+        top: 550px;
+        left: 220px;
+        background-color: #ffffff;
+        margin-left: 60px;
+        
+    }
+
