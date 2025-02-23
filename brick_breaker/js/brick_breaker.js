@@ -1,8 +1,7 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 
-let paused = false;
-let started = false;
+let paused = true;
 let animationID = null;
 let gameSpeed = 4;
 
@@ -122,8 +121,7 @@ document.addEventListener("keydown", e => {
         // case " ":
         case " ": // PAUSE OR PLAY
             paused = !paused;
-            if(!paused || !started) { // play
-                started = true;
+            if(!paused) { // play
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
                 }
@@ -138,12 +136,20 @@ document.addEventListener("keydown", e => {
         case "ArrowLeft": // PADDLE LEFT
             if(paddleX > 0) {
                 paddleX -= 75;
+                if(paused) {
+                    ballX -= 75
+                    ball.style.left = `${ballX}px`;
+                }
             }
             paddle.style.left = `${paddleX}px`;
         break;
         case "ArrowRight": // PADDLE RIGHT
             if(paddleX < 450) {
-            paddleX += 75;
+                paddleX += 75;
+                if(paused) {
+                    ballX += 75;
+                    ball.style.left = `${ballX}px`;
+                }
             }
             paddle.style.left = `${paddleX}px`;
         break;
