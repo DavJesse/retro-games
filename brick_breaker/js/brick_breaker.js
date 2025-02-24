@@ -6,6 +6,7 @@ let paused = true;
 let started = false;
 let animationID = null;
 let gameSpeed = 4;
+let level = 1
 
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
@@ -30,7 +31,7 @@ let paddleRight = paddleLeft + paddleWidth;
 
 // Initialize ball speed
 let ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed;
-let ballSpeedY = -4;
+let ballSpeedY = -gameSpeed;
 
 // Initialize paddle position at center of game container
 paddle.style.left = paddleX + "px";
@@ -85,9 +86,10 @@ function updateBallPosition() {
 
     // Reset game when player wins
     if (brickPositions.length === 0) {
-        alert("You Won!");
+        alert(`You Won level ${level}! Proceed to level ${level + 1}`);
         nextLevel();
     }
+    console.log(gameSpeed)
 
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
@@ -107,7 +109,7 @@ function resetGame() {
 
     // Set random initial ball direction
     ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
-    ballSpeedY = -4; // Move upwards
+    ballSpeedY = -gameSpeed; // Move upwards
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -118,6 +120,12 @@ function resetGame() {
 }
 
 function nextLevel() {
+    level++;
+    gameSpeed ++;
+
+    if (level === 6) {
+        alert("You Won the Game!")
+    }
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
@@ -128,7 +136,7 @@ function nextLevel() {
 
     // Set random initial ball direction
     ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
-    ballSpeedY = -4; // Move upwards
+    ballSpeedY = -gameSpeed; // Move upwards
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -136,7 +144,7 @@ function nextLevel() {
     if (brickContainer) {
         brickContainer.remove();
     }
-    generateBricks(2)
+    generateBricks(level)
 
     // Update ball position in the DOM
     window.ball.style.left = ballX + "px";
