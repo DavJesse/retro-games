@@ -1,7 +1,7 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 
-let paused = false;
+let paused = true;
 let started = false;
 let animationID = null;
 let gameSpeed = 4;
@@ -122,8 +122,11 @@ document.addEventListener("keydown", e => {
         // case " ":
         case " ": // PAUSE OR PLAY
             paused = !paused;
-            if(!paused || !started) { // play
-                started = true;
+            // set started to true once the space is clicked first time
+            if(!started) {
+                started = true
+            }
+            if(!paused) { // play
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
                 }
@@ -137,15 +140,33 @@ document.addEventListener("keydown", e => {
         break;
         case "ArrowLeft": // PADDLE LEFT
             if(paddleX > 0) {
-                paddleX -= 75;
+                if(started && paused) {
+                    // do not allow user to move the paddle when they pause once the game has started
+                } else {
+                    paddleX -= 75;
+                    paddle.style.left = `${paddleX}px`;
+                }
+
+                if(paused && !started && ballY == 550) {
+                    ballX -= 75
+                    ball.style.left = `${ballX}px`;
+                }
             }
-            paddle.style.left = `${paddleX}px`;
         break;
         case "ArrowRight": // PADDLE RIGHT
             if(paddleX < 450) {
-            paddleX += 75;
+                if(started && paused) {
+                    // do not allow user to move the paddle when they pause once the game has started
+                } else {
+                    paddleX += 75;
+                    paddle.style.left = `${paddleX}px`;
+                }
+
+                if(paused && !started && ballY == 550) {
+                    ballX += 75;
+                    ball.style.left = `${ballX}px`;
+                }
             }
-            paddle.style.left = `${paddleX}px`;
         break;
     }
 });

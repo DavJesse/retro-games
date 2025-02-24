@@ -42,8 +42,8 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
             // Remove brick if count reaches 0
             if (brick.numberofhits <= 1) {
                 brick.Destroy();
-                console.log(`array index: ${i}`)
-                console.log(brick)
+                // console.log(`array index: ${i}`)
+                // console.log(brick)
                 bricks.splice(i, 1); // Remove from array
             }
             
