@@ -210,3 +210,83 @@
   0% { opacity: 0.3; }
   100% { opacity: 0.7; }
 }
+
+
+/* Hit animation effect */
+.brick.life-up.hit {
+  animation: hit-effect 0.5s ease-out forwards;
+}
+
+/* Heart fly up animation */
+.life-heart {
+  position: absolute;
+  color: #ff2d55;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 100;
+  animation: heart-fly-up 1s ease-out forwards;
+  text-shadow: 
+      0 0 5px white,
+      0 0 10px rgba(255,45,85,0.7);
+}
+
+/* Sparkle particles */
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 99;
+}
+
+/* Animation for hit effect */
+@keyframes hit-effect {
+  0% {
+      transform: scale(1);
+      filter: brightness(1);
+  }
+  50% {
+      transform: scale(1.2);
+      filter: brightness(1.5);
+  }
+  100% {
+      transform: scale(0);
+      opacity: 0;
+      filter: brightness(2);
+  }
+}
+
+/* Animation for flying heart */
+@keyframes heart-fly-up {
+  0% {
+      transform: scale(0.5) translateY(0);
+      opacity: 0.7;
+  }
+  25% {
+      transform: scale(1.2) translateY(-15px);
+      opacity: 1;
+  }
+  100% {
+      transform: scale(1.5) translateY(-50px);
+      opacity: 0;
+  }
+}
+
+/* Animation for sparkles */
+@keyframes sparkle-fade {
+  0% {
+      transform: scale(0) translateY(0);
+      opacity: 0.8;
+  }
+  50% {
+      transform: scale(1.2);
+      opacity: 1;
+  }
+  100% {
+      transform: scale(0.5) translateY(-20px);
+      opacity: 0;
+  }
+}

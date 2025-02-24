@@ -1,3 +1,5 @@
+import { OnBallHitBrick} from "./life.js"
+
 var normalBricks = ["brick red", "brick orange", "brick yellow", "brick green", "brick blue"];
 var hardBricks = ["brick steel", "brick chrome", "brick metallic"];
 var lifeBricks = ["brick life-up"];
@@ -31,6 +33,13 @@ class Brick {
 
       if (this.numberofhits === 0) {
          this.isBrickDestroyed = true;
+
+         if(lifeBricks.includes(this.bricktype)){
+           OnBallHitBrick(document.getElementById(this.brickid))
+         }
+
+
+
          brick.classList.add("brick-destroyed");
 
          let scoreElement = document.getElementById("scores");
@@ -72,7 +81,7 @@ export function generateBricks(level = 1) {
    gameContainer.appendChild(brickContainer);
 
    if (level === 1) {
-      createBricks(brickContainer, 10, 2, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
+      createBricks(brickContainer, 10, 1, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
    }else if (level === 2){
       createBricks(brickContainer,10,2,8,35,[...normalBricks,...lifeBricks,...crackedBricks,...hardBricks])
    }else if(level === 3){

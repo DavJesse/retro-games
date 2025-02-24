@@ -1,13 +1,13 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
-import {Gamepaused} from "./menu.js"
+import {GameMenu, RestartButton, Updatelive} from "./menu.js"
 
 let paused = true;
 let started = false;
 let animationID = null;
 let gameSpeed = 4;
-export let level = 1
+
 
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
@@ -37,6 +37,7 @@ let ballSpeedY = -gameSpeed;
 // Initialize paddle position at center of game container
 paddle.style.left = paddleX + "px";
 
+var hasbeencalled=false;
 function updateBallPosition() {
     // Move ball horizontally and vertically
     ballX += ballSpeedX;
@@ -46,11 +47,16 @@ function updateBallPosition() {
     if (ballX <= leftWall || ballX + 20 >= rightWall) { // 20 is ball width
         ballSpeedX *= -1; // Reverse direction
     }
-   
     // **Bounce off the top wall**
     if (ballY >= outOfBounds) { 
-        alert("Game Over!");
-        resetGame();
+        if (!hasbeencalled){
+        hasbeencalled=true
+       if (Updatelive()){
+        RestartButton("gameover")
+        return
+       }
+    }
+    resetGame()
     }
 
     // paddle collision
@@ -87,10 +93,8 @@ function updateBallPosition() {
 
     // Reset game when player wins
     if (brickPositions.length === 0) {
-        if (level < 5) {
-            alert(`You Won level ${level}! Proceed to level ${level + 1}`);
-        }
-        nextLevel();
+        arrows({ key: " " }, "nextLevel");
+        return
     }
     console.log(gameSpeed)
 
@@ -102,6 +106,7 @@ function updateBallPosition() {
 }
 
 export function resetGame() {
+    hasbeencalled=false;
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
@@ -122,9 +127,8 @@ export function resetGame() {
     window.ball.style.top = ballY + "px";
 }
 
-function nextLevel() {
-    level++;
-    gameSpeed ++;
+export function nextLevel(level=2,newgamespeed) {
+    gameSpeed +=newgamespeed;
 
     if (level == 6) {
         alert("Contratulation! You Beat the Game!");
@@ -159,12 +163,12 @@ function nextLevel() {
 
 
 document.addEventListener("keydown", e => {
-    arrows(e);
+    arrows(e,"paused");
 });
 
 
 
-export function arrows(e) {
+export function arrows(e,menutype) {
     switch (e.key) {
         // case " ":
         case " ": // PAUSE OR PLAY
@@ -176,14 +180,14 @@ export function arrows(e) {
             if (!paused) { // play
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
-                    Gamepaused(false);
+                    GameMenu(false,menutype);
                 }
             } else { // pause
                 // cancel the current animation frame
                 if (animationID) {
                     cancelAnimationFrame(animationID);
                     animationID = null;
-                    Gamepaused(paused);
+                    GameMenu(paused,menutype);
                 }
             }
             break;

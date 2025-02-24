@@ -1,20 +1,19 @@
 import { generateBricks } from "./brickmaker.js";
-import {resetGame } from "./brick_breaker.js"
-import { arrows } from "./brick_breaker.js"
+import { nextLevel, resetGame } from "./brick_breaker.js";
+import { arrows } from "./brick_breaker.js";
 
-function CreateOverlay(paused) {
-    if(paused){
-      let overlay=document.createElement("div")
-      overlay.setAttribute("id","pause-overlay")      
-      document.getElementById("game-container").appendChild(overlay)
-    }else{
-        let k=document.getElementById("pause-overlay")
-        if(k){
-            k.remove();
+function CreateOverlay(isPaused) {
+    if (isPaused) {
+        let overlayElement = document.createElement("div");
+        overlayElement.setAttribute("id", "pause-overlay");
+        document.getElementById("game-container").appendChild(overlayElement);
+    } else {
+        let existingOverlay = document.getElementById("pause-overlay");
+        if (existingOverlay) {
+            existingOverlay.remove();
         }
     }
 }
-
 // // <div id="pause-menu">
 // <h2>GAME PAUSED</h2>
 // <div class="pause-score">Score: <span id="pause-score">0</span></div>
@@ -23,51 +22,115 @@ function CreateOverlay(paused) {
 // <button class="pause-btn" onclick="restartGame()">Restart Game</button>
 // </div>
 
-export function Gamepaused(paused){
-    if (paused){
-          CreateOverlay(paused);
-    let pausemenu=document.createElement("div");
-    pausemenu.setAttribute("id","pause-menu");
-    document.getElementById("game-container").appendChild(pausemenu);
+export function GameMenu(isPaused, menuState = "paused") {
+    var menuTitleMap = {
+        "paused": "GAME PAUSED",
+        "gameover": "GAME OVER!",
+        "nextLevel": "Level Completed"
+    };
+    
+    if (isPaused) {
+        CreateOverlay(isPaused);
+        let pauseMenuElement = document.createElement("div");
+        pauseMenuElement.setAttribute("id", "pause-menu");
+        document.getElementById("game-container").appendChild(pauseMenuElement);
 
-    let pausetitle=document.createElement("h2");
-    pausetitle.textContent="GAME PAUSED";
-    pausemenu.appendChild(pausetitle);
+        let pauseTitleElement = document.createElement("h2");
+        pauseTitleElement.textContent = menuTitleMap[menuState];
+        pauseMenuElement.appendChild(pauseTitleElement);
 
-    let resumebutton=document.createElement("button");
-    resumebutton.setAttribute("class","pause-btn resume");
-    resumebutton.textContent="Resume Game";
-    pausemenu.appendChild(resumebutton);
-    resumebutton.onclick=()=>{
-        arrows({ key: " " });
-    }
+        if (menuState === "paused" || menuState === "nextLevel") {
+            let resumeButton = document.createElement("button");
+            pauseMenuElement.appendChild(resumeButton);
 
-    let restartbutton=document.createElement("button");
-    restartbutton.setAttribute("class","pause-btn");
-    restartbutton.textContent="Restart Level";
-    pausemenu.appendChild(restartbutton);
-    restartbutton.onclick=()=>{
-        Restartlevel();
-        Gamepaused(false)
-    }
-      }else{
-        CreateOverlay(paused)
-        let m=document.getElementById("pause-menu")
-        if(m){
-
-            m.remove();
+            if (menuState === "paused") {
+                resumeButton.setAttribute("class", "pause-btn resume");
+                resumeButton.textContent = "Resume Game";
+                resumeButton.onclick = () => {
+                    arrows({ key: " " }, "paused");
+                };
+            } else {
+                resumeButton.setAttribute("class", "pause-btn next-level");
+                resumeButton.textContent = "Next Level";
+                resumeButton.onclick = () => {
+                    RestartButton(menuState);
+                };
+            }
         }
-      }
 
+        let restartButton = document.createElement("button");
+        restartButton.setAttribute("class", "pause-btn");
+        restartButton.textContent = menuState === "gameover" ? "Restart Game" : menuState === "paused" ? "Restart the level" : "Replay the level";
+        pauseMenuElement.appendChild(restartButton);
+        restartButton.onclick = () => {
+            RestartButton(menuState);
+        };
+    } else {
+        CreateOverlay(isPaused);
+        let existingPauseMenu = document.getElementById("pause-menu");
+        if (existingPauseMenu) {
+            existingPauseMenu.remove();
+        }
+    }
 }
 
-function Restartlevel(){
-     const brickContainer = document.getElementById("brick-container");
-        if (brickContainer) {
-            brickContainer.remove();
-        }
-        let level=document.getElementById("level").textContent;
-        arrows({ key: " " });
-        resetGame();
-        generateBricks(parseInt(level))
+export function RestartButton(menuState) {
+    const brickContainerElement = document.getElementById("brick-container");
+    if (brickContainerElement) {
+        brickContainerElement.remove();
+    }
+    let currentLevel = document.getElementById("level").textContent;
+    arrows({ key: " " }, menuState);
+    resetGame();
+    
+    if (menuState === "gameover") {
+        resetToLevelOne()
+    }else if(menuState === "nextLevel") {
+        let newlevel=updatelevel();
+        let gamespeed=IncreaseGameSpeed();
+           nextLevel(newlevel,gamespeed)
+    }else {
+        generateBricks(parseInt(currentLevel));
+    }
+}
+
+export function Updatelive() {
+    let livesElement = document.getElementById("lives");
+    let remainingLives = parseInt(livesElement.textContent);
+    
+    if (remainingLives > 0) {
+        remainingLives -= 1;
+    }
+    
+    livesElement.textContent = remainingLives;
+    return remainingLives === 0;
+}
+
+function updatelevel(){
+    let LevelElement=document.getElementById("level")
+    let Currentlevel=parseInt(LevelElement.textContent)
+
+    Currentlevel+=1
+    LevelElement.textContent=Currentlevel
+
+    return Currentlevel;
+}
+
+let speed=0;
+function IncreaseGameSpeed(){
+    return speed+=1;  
+}
+
+
+function resetToLevelOne() {
+    let LevelElement = document.getElementById("level");
+    LevelElement.textContent = 1;  
+
+    let livesElement = document.getElementById("lives");
+    livesElement.textContent = 3;  
+
+    let scores=document.getElementById("scores")
+    scores.textContent=0;
+
+    nextLevel(1, 0); 
 }
