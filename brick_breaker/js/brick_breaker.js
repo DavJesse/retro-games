@@ -130,9 +130,12 @@ export function resetGame() {
 export function nextLevel(level=2,newgamespeed) {
     gameSpeed +=newgamespeed;
 
-    if (level === 6) {
-        alert("You Won the Game!")
+    if (level == 6) {
+        alert("Contratulation! You Beat the Game!");
+        level = 1;
+        gameSpeed = 4;
     }
+
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
