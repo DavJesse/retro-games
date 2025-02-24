@@ -86,7 +86,9 @@ function updateBallPosition() {
 
     // Reset game when player wins
     if (brickPositions.length === 0) {
-        alert(`You Won level ${level}! Proceed to level ${level + 1}`);
+        if (level < 5) {
+            alert(`You Won level ${level}! Proceed to level ${level + 1}`);
+        }
         nextLevel();
     }
     console.log(gameSpeed)
@@ -123,9 +125,12 @@ function nextLevel() {
     level++;
     gameSpeed ++;
 
-    if (level === 6) {
-        alert("You Won the Game!")
+    if (level == 6) {
+        alert("Contratulation! You Beat the Game!");
+        level = 1;
+        gameSpeed = 4;
     }
+
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
