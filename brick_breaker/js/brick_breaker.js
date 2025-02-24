@@ -1,6 +1,7 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
+import {Gamepaused} from "./menu.js"
 
 let paused = true;
 let started = false;
@@ -156,12 +157,14 @@ document.addEventListener("keydown", e => {
             if(!paused) { // play
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
+                    Gamepaused(false)
                 }
             } else { // pause
                 // cancel the current animation frame
                 if (animationID) {
                     cancelAnimationFrame(animationID);
                     animationID = null;
+                    Gamepaused(paused)
                 }
             }
         break;
