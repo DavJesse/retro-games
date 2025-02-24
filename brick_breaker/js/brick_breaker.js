@@ -1,12 +1,13 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
+import {Gamepaused} from "./menu.js"
 
 let paused = true;
 let started = false;
 let animationID = null;
 let gameSpeed = 4;
-let level = 1
+export let level = 1
 
 // Extract dimentions
 let gameContainer = document.getElementById("game-container");
@@ -100,7 +101,7 @@ function updateBallPosition() {
     animationID = requestAnimationFrame(updateBallPosition);
 }
 
-function resetGame() {
+export function resetGame() {
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
@@ -158,60 +159,66 @@ function nextLevel() {
 
 
 document.addEventListener("keydown", e => {
-    switch(e.key) {
+    arrows(e);
+});
+
+
+
+export function arrows(e) {
+    switch (e.key) {
         // case " ":
         case " ": // PAUSE OR PLAY
             paused = !paused;
             // set started to true once the space is clicked first time
-            if(!started) {
-                started = true
+            if (!started) {
+                started = true;
             }
-            if(!paused) { // play
+            if (!paused) { // play
                 if (!animationID) {
                     animationID = requestAnimationFrame(updateBallPosition);
+                    Gamepaused(false);
                 }
             } else { // pause
                 // cancel the current animation frame
                 if (animationID) {
                     cancelAnimationFrame(animationID);
                     animationID = null;
+                    Gamepaused(paused);
                 }
             }
-        break;
+            break;
         case "ArrowLeft": // PADDLE LEFT
-            if(paddleX > 0) {
-                if(started && paused) {
+            if (paddleX > 0) {
+                if (started && paused) {
                     // do not allow user to move the paddle when they pause once the game has started
                 } else {
                     paddleX -= 75;
                     paddle.style.left = `${paddleX}px`;
                 }
 
-                if(paused && !started && ballY == 550) {
-                    ballX -= 75
+                if (paused && !started && ballY == 550) {
+                    ballX -= 75;
                     ball.style.left = `${ballX}px`;
                 }
             }
-        break;
+            break;
         case "ArrowRight": // PADDLE RIGHT
-            if(paddleX < 450) {
-                if(started && paused) {
+            if (paddleX < 450) {
+                if (started && paused) {
                     // do not allow user to move the paddle when they pause once the game has started
                 } else {
                     paddleX += 75;
                     paddle.style.left = `${paddleX}px`;
                 }
 
-                if(paused && !started && ballY == 550) {
+                if (paused && !started && ballY == 550) {
                     ballX += 75;
                     ball.style.left = `${ballX}px`;
                 }
             }
-        break;
+            break;
     }
-});
-
-
+}
 
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);
