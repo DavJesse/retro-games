@@ -1,3 +1,6 @@
+import { generateBricks } from "./brickmaker.js";
+import {resetGame } from "./brick_breaker.js"
+import { arrows } from "./brick_breaker.js"
 
 function CreateOverlay(paused) {
     if(paused){
@@ -35,11 +38,18 @@ export function Gamepaused(paused){
     resumebutton.setAttribute("class","pause-btn resume");
     resumebutton.textContent="Resume Game";
     pausemenu.appendChild(resumebutton);
+    resumebutton.onclick=()=>{
+        arrows({ key: " " });
+    }
 
     let restartbutton=document.createElement("button");
     restartbutton.setAttribute("class","pause-btn");
     restartbutton.textContent="Restart Level";
     pausemenu.appendChild(restartbutton);
+    restartbutton.onclick=()=>{
+        Restartlevel();
+        Gamepaused(false)
+    }
       }else{
         CreateOverlay(paused)
         let m=document.getElementById("pause-menu")
@@ -49,4 +59,17 @@ export function Gamepaused(paused){
         }
       }
 
+}
+
+function Restartlevel(){
+     const brickContainer = document.getElementById("brick-container");
+        if (brickContainer) {
+            brickContainer.remove();
+        }
+        let level=document.getElementById("level")
+        
+
+        arrows({ key: " " });
+        resetGame();
+        generateBricks(parseInt(level))
 }
