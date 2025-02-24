@@ -66,9 +66,7 @@ function Restartlevel(){
         if (brickContainer) {
             brickContainer.remove();
         }
-        let level=document.getElementById("level")
-        
-
+        let level=document.getElementById("level").textContent;
         arrows({ key: " " });
         resetGame();
         generateBricks(parseInt(level))
