@@ -1,20 +1,21 @@
+body {
+    /* display: flex; */
+    overlay: hidden;
+    /* justify-content: center; */
+}
+
 #game-container {
     height: 600px;
     width: 600px;
+    left: 360px;
     background-color: #000000;
-    position: relative;
+    position: fixed;
     margin: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
-#brick-wrapper {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: flex-start; /* Align bricks at the top */
-    width: 100%;
-}
 
 #score-board {
     display: flex;

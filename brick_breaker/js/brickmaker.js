@@ -123,5 +123,5 @@ function createBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbric
 
       totalBricks++;
    }
-   console.log(brickPositions)
+   // console.log(brickPositions)
 }
