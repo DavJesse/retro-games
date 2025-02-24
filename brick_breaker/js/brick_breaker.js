@@ -1,5 +1,6 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
+import { generateBricks } from "./brickmaker.js";
 
 let paused = true;
 let started = false;
@@ -83,10 +84,10 @@ function updateBallPosition() {
     }
 
     // Reset game when player wins
-    // if (brickPositions.length === 0) {
-    //     alert("You Won!");
-    //     resetGame();
-    // }
+    if (brickPositions.length === 0) {
+        alert("You Won!");
+        nextLevel();
+    }
 
     // Update ball position in the DOM
     window.ball.style.top = ballY + "px";
@@ -110,6 +111,32 @@ function resetGame() {
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
+
+    // Update ball position in the DOM
+    window.ball.style.left = ballX + "px";
+    window.ball.style.top = ballY + "px";
+}
+
+function nextLevel() {
+    // Reset ball position to the center-bottom of the game container
+    ballX = (containerWidth - 20) / 2; // Center horizontally
+    ballY = 550; // Near the bottom
+
+    // Reset paddle position to the center
+    paddleX = (containerWidth - paddleWidth) / 2;
+    document.getElementById("paddle").style.left = paddleX + "px";
+
+    // Set random initial ball direction
+    ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
+    ballSpeedY = -4; // Move upwards
+
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+   const brickContainer = document.getElementById("brick-container");
+    if (brickContainer) {
+        brickContainer.remove();
+    }
+    generateBricks(2)
 
     // Update ball position in the DOM
     window.ball.style.left = ballX + "px";

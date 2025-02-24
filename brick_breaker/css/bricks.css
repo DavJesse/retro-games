@@ -20,6 +20,7 @@
     top: 50px;
     gap: 2px;
     flex-wrap: wrap;
+    /* border: 2px solid red; */
   }
   
   .brick {
