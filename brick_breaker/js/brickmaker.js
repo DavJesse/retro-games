@@ -3,7 +3,7 @@ import { OnBallHitBrick} from "./life.js"
 var normalBricks = ["brick red", "brick orange", "brick yellow", "brick green", "brick blue"];
 var hardBricks = ["brick steel", "brick chrome", "brick metallic"];
 var lifeBricks = ["brick life-up"];
-var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick green svg-cracked", "brick orange svg-cracked", "brick blue svg-cracked"];
+//var crackedBricks = ["brick red svg-cracked", "brick yellow svg-cracked", "brick green svg-cracked", "brick orange svg-cracked", "brick blue svg-cracked"];
 
 class Brick {
    #isBrickDestroyed;
@@ -28,7 +28,6 @@ class Brick {
 
    Destroy() {
       let brick = document.getElementById(this.brickid);
-
       if (!brick) return;
 
       if (this.numberofhits === 0) {
@@ -37,9 +36,11 @@ class Brick {
          if(lifeBricks.includes(this.bricktype)){
            OnBallHitBrick(document.getElementById(this.brickid))
          }
+         if (this.bricktype === "hit red"){
+            brick.classList.remove("hit");
+            brick.classList.remove("red")
 
-
-
+         }
          brick.classList.add("brick-destroyed");
 
          let scoreElement = document.getElementById("scores");
@@ -52,11 +53,24 @@ class Brick {
             points = 50;
          } else if (hardBricks.includes(this.bricktype)) {
             points = 100;
-         } else if (crackedBricks.includes(this.bricktype)) {
-            points = 25;
          }
 
          scoreElement.textContent = currentScore + points;
+      }
+   }
+   OnBallhitHardBrick(){
+      if(hardBricks.includes(this.bricktype)){
+         if(this.numberofhits == 1){
+            let bricks = document.getElementById(this.brickid);
+
+            // Add the hit class which triggers the animation
+              bricks.classList.add('hit');
+              let k=this.bricktype.split(" ")
+              bricks.classList.remove(k[1])
+              bricks.classList.add("red")
+              this.bricktype="hit red"
+
+         }
       }
    }
 
@@ -80,23 +94,32 @@ export function generateBricks(level = 1) {
    brickContainer.id = "brick-container";
    gameContainer.appendChild(brickContainer);
 
+   var NumberOfLifeBreaks=(()=>{
+             let remaininglives=parseInt(document.getElementById("lives").textContent)
+             if (remaininglives >= 5){
+               return 0
+             }
+
+             return level >= 1 && level <= 3 ? Math.floor(Math.random()*5) : Math.floor(Math.random()*2)
+       
+   })();
+
    if (level === 1) {
-      createBricks(brickContainer, 10, 1, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
+      createBricks(brickContainer, NumberOfLifeBreaks, 0, 35, [...normalBricks, ...lifeBricks]);
    }else if (level === 2){
-      createBricks(brickContainer,10,2,8,35,[...normalBricks,...lifeBricks,...crackedBricks,...hardBricks])
+      createBricks(brickContainer,NumberOfLifeBreaks,10,35,[...normalBricks,...lifeBricks,...hardBricks])
    }else if(level === 3){
-      createBricks(brickContainer,10,3,10,35,[...lifeBricks,...normalBricks,crackedBricks,...hardBricks])
+      createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
    }else if(level === 4){
-      createBricks(brickContainer,10,3,12,35,[...lifeBricks,...hardBricks,...crackedBricks,...normalBricks])
+      createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
    }else{
-      createBricks(brickContainer,9,3,15,35,[...lifeBricks,...hardBricks,...normalBricks,...crackedBricks])
+      createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
    }
 }
 
-function createBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
+function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
    let totalBricks = 0;
    let lifeBrickCount = 0;
-   let crackedBrickscount = 0;
    let hardbrickCount = 0;
 
 
@@ -107,11 +130,6 @@ function createBricks(brickContainer, maxCrackBricks, maxLifeBricks, maxhardbric
          if (lifeBrickCount >= maxLifeBricks) continue;
          lifeBrickCount++;
       }
-      if (crackedBricks.includes(brickType)) {
-         if (crackedBrickscount >= maxCrackBricks) continue;
-         crackedBrickscount++
-      }
-         
       if (hardBricks.includes(brickType)) {
          if (hardbrickCount >= maxhardbricks) continue;
          hardbrickCount++
