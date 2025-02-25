@@ -84,7 +84,7 @@ export function RestartButton(menuState) {
     resetGame();
     
     if (menuState === "gameover") {
-        resetToLevelOne()
+        resetToLevelOne(parseInt(currentLevel))
     }else if(menuState === "nextLevel") {
         let newlevel=updatelevel();
         let gamespeed=IncreaseGameSpeed();
@@ -122,7 +122,7 @@ function IncreaseGameSpeed(){
 }
 
 
-function resetToLevelOne() {
+function resetToLevelOne(level) {
     let LevelElement = document.getElementById("level");
     LevelElement.textContent = 1;  
 
@@ -132,5 +132,15 @@ function resetToLevelOne() {
     let scores=document.getElementById("scores")
     scores.textContent=0;
 
-    nextLevel(1, 0); 
+    const speedMap = {
+        1: 0,
+        2: -1,
+        3: -2,
+        4: -3
+    };
+    
+    let gamespeed = speedMap[level] ?? -4;
+//reset to level one
+  console.log(gamespeed)
+    nextLevel(1, gamespeed); 
 }
