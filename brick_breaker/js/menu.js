@@ -57,14 +57,17 @@ export function GameMenu(isPaused, menuState = "paused") {
                 };
             }
         }
-
+ 
+        
         let restartButton = document.createElement("button");
         restartButton.setAttribute("class", "pause-btn");
-        restartButton.textContent = menuState === "gameover" ? "Restart Game" : menuState === "paused" ? "Restart the level" : "Replay the level";
+        restartButton.textContent = "Restart the Game";
         pauseMenuElement.appendChild(restartButton);
         restartButton.onclick = () => {
             RestartButton(menuState);
         };
+    
+
     } else {
         CreateOverlay(isPaused);
         let existingPauseMenu = document.getElementById("pause-menu");
@@ -83,14 +86,13 @@ export function RestartButton(menuState) {
     arrows({ key: " " }, menuState);
     resetGame();
     
-    if (menuState === "gameover") {
-        resetToLevelOne(parseInt(currentLevel))
-    }else if(menuState === "nextLevel") {
+    
+    if(menuState === "nextLevel") {
         let newlevel=updatelevel();
         let gamespeed=IncreaseGameSpeed();
-           nextLevel(newlevel,gamespeed)
+        nextLevel(newlevel,gamespeed)
     }else {
-        generateBricks(parseInt(currentLevel));
+        resetToLevelOne(parseInt(currentLevel)) 
     }
 }
 
@@ -141,6 +143,6 @@ function resetToLevelOne(level) {
     
     let gamespeed = speedMap[level] ?? -4;
 //reset to level one
-  console.log(gamespeed)
     nextLevel(1, gamespeed); 
+    window.location.reload()
 }

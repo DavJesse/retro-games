@@ -52,7 +52,7 @@ function updateBallPosition() {
         if (!hasbeencalled){
         hasbeencalled=true
        if (Updatelive()){
-        RestartButton("gameover")
+        arrows({ key: " " }, "gameover");
         return
        }
     }
