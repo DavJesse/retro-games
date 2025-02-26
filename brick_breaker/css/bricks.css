@@ -136,6 +136,34 @@
   background-repeat: no-repeat;
 }
 
+
+
+
+.brick.red {
+  background-color: #FF5252;
+}
+
+/* Animation for brick hit */
+@keyframes brickHit {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* When metallic brick is hit, apply this class with JavaScript */
+.brick.hit {
+  animation: brickHit 0.3s ease-out forwards;
+  background: #FF5252 !important; /* Override the metallic gradient */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important; /* Override metallic shadow */
+  border: none !important;
+}
+
 /* Add some texture using SVG for more complex cracks */
 .brick.svg-cracked {
   position: relative;

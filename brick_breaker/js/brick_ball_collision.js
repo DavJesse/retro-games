@@ -22,6 +22,7 @@ export function BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, bricks)
         ) {
             // Ball hit the brick
             brick.numberofhits--;
+            brick. OnBallhitHardBrick();
             collided = true;
             
             // Determine bounce direction
