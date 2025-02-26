@@ -70,15 +70,15 @@ var getRandomBrick = (brickList) => {
 };
 
 export function generateBricks(level = 1) {
-   var gameContainer = document.getElementById("brick-wrapper");
-   if (!gameContainer) {
+   var brickWrapper = document.getElementById("brick-wrapper");
+   if (!brickWrapper) {
       console.error("Game container not found!");
       return;
    }
 
    var brickContainer = document.createElement("div");
    brickContainer.id = "brick-container";
-   gameContainer.appendChild(brickContainer);
+   brickWrapper.appendChild(brickContainer);
 
    if (level === 1) {
       createBricks(brickContainer, 10, 1, 0, 35, [...normalBricks, ...lifeBricks, ...crackedBricks]);
