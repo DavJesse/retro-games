@@ -92,7 +92,7 @@ function updateBallPosition() {
     }
 
     // Reset game when player wins
-    if (brickPositions.length === 0) {
+    if (brickPositions.length === 0 && ballBounds.bottom >= paddleBounds.top) {
         arrows({ key: " " }, "nextLevel");
         return
     }
