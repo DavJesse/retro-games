@@ -84,15 +84,15 @@ var getRandomBrick = (brickList) => {
 };
 
 export function generateBricks(level = 1) {
-   var gameContainer = document.getElementById("brick-wrapper");
-   if (!gameContainer) {
+   var brickWrapper = document.getElementById("brick-wrapper");
+   if (!brickWrapper) {
       console.error("Game container not found!");
       return;
    }
 
    var brickContainer = document.createElement("div");
    brickContainer.id = "brick-container";
-   gameContainer.appendChild(brickContainer);
+   brickWrapper.appendChild(brickContainer);
 
    var NumberOfLifeBreaks=(()=>{
              let remaininglives=parseInt(document.getElementById("lives").textContent)
