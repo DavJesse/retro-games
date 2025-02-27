@@ -96,7 +96,7 @@ export function generateBricks(level = 1) {
 
    var NumberOfLifeBreaks=(()=>{
              let remaininglives=parseInt(document.getElementById("lives").textContent)
-             if (remaininglives >= 5){
+             if (remaininglives >= 3){
                return 0
              }
 
@@ -117,38 +117,61 @@ export function generateBricks(level = 1) {
    }
 }
 
-function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
+
+function createBricks(brickContainer, maxLifeBricks, maxHardBricks, maxBricks, AllBricks) {
    let totalBricks = 0;
    let lifeBrickCount = 0;
-   let hardbrickCount = 0;
+   let hardBrickCount = 0;
+   const fragment = document.createDocumentFragment();
+   const batchSize = 7; 
 
+   function createNextBatch() {
+       let batchCount = 0;
+       while (batchCount < batchSize && totalBricks < maxBricks) {
+           let brickType = getRandomBrick(AllBricks);
 
-   while (totalBricks < maxBricks) {
-      let brickType = getRandomBrick(Allbricks);
+   
+           if (brickType === lifeBricks[0] && lifeBrickCount >= maxLifeBricks) continue;
+           if (brickType === lifeBricks[0]) lifeBrickCount++;
 
-      if (brickType === lifeBricks[0]) {
-         if (lifeBrickCount >= maxLifeBricks) continue;
-         lifeBrickCount++;
-      }
-      if (hardBricks.includes(brickType)) {
-         if (hardbrickCount >= maxhardbricks) continue;
-         hardbrickCount++
-      }
-      let brickElement = document.createElement("div");
-      brickElement.setAttribute("class", brickType);
-      brickElement.setAttribute("id", totalBricks)
-      brickContainer.appendChild(brickElement);
-      var maxnumberofhit;
-      if(hardBricks.includes(brickType)){
-         maxnumberofhit=2
-      }else{
-         maxnumberofhit=1
-      }
+           if (hardBricks.includes(brickType) && hardBrickCount >= maxHardBricks) continue;
+           if (hardBricks.includes(brickType)) hardBrickCount++;
 
-      let brickDimensions = brickElement.getBoundingClientRect();
-      brickPositions.push(new Brick(totalBricks,brickType,parseInt(brickDimensions.top), parseInt(brickDimensions.bottom), parseInt(brickDimensions.left), parseInt(brickDimensions.right), false,maxnumberofhit));
+           
+           let brickElement = document.createElement("div");
+           brickElement.className = brickType;
+           brickElement.id = totalBricks;
+           fragment.appendChild(brickElement);
 
-      totalBricks++;
+           totalBricks++;
+           batchCount++;
+       }
+       brickContainer.appendChild(fragment);
+       requestAnimationFrame(() => {
+           for (let i = totalBricks - batchCount; i < totalBricks; i++) {
+               let brickElement = document.getElementById(i);
+               if (!brickElement) continue;
+
+               let brickDimensions = brickElement.getBoundingClientRect();
+               let maxNumberOfHits = hardBricks.includes(brickElement.className) ? 2 : 1;
+
+               brickPositions.push(new Brick(
+                   i,
+                   brickElement.className,
+                   parseInt(brickDimensions.top),
+                   parseInt(brickDimensions.bottom),
+                   parseInt(brickDimensions.left),
+                   parseInt(brickDimensions.right),
+                   false,
+                   maxNumberOfHits
+               ));
+           }
+       });
+
+       if (totalBricks < maxBricks) {
+           requestAnimationFrame(createNextBatch);
+       }
    }
-   // console.log(brickPositions)
+
+   requestAnimationFrame(createNextBatch);
 }
