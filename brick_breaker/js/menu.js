@@ -2,18 +2,18 @@ import { generateBricks } from "./brickmaker.js";
 import { nextLevel, resetGame } from "./brick_breaker.js";
 import { arrows } from "./brick_breaker.js";
 
-function CreateOverlay(isPaused) {
-    if (isPaused) {
-        let overlayElement = document.createElement("div");
-        overlayElement.setAttribute("id", "pause-overlay");
-        document.getElementById("game-container").appendChild(overlayElement);
-    } else {
-        let existingOverlay = document.getElementById("pause-overlay");
-        if (existingOverlay) {
-            existingOverlay.remove();
-        }
-    }
-}
+// function CreateOverlay(isPaused) {
+//     if (isPaused) {
+//         let overlayElement = document.createElement("div");
+//         overlayElement.setAttribute("id", "pause-overlay");
+//         document.getElementById("game-container").appendChild(overlayElement);
+//     } else {
+//         let existingOverlay = document.getElementById("pause-overlay");
+//         if (existingOverlay) {
+//             existingOverlay.remove();
+//         }
+//     }
+// }
 // // <div id="pause-menu">
 // <h2>GAME PAUSED</h2>
 // <div class="pause-score">Score: <span id="pause-score">0</span></div>
@@ -21,7 +21,6 @@ function CreateOverlay(isPaused) {
 // <button class="pause-btn next-level" onclick="nextLevel()">Next Level</button>
 // <button class="pause-btn" onclick="restartGame()">Restart Game</button>
 // </div>
-
 export function GameMenu(isPaused, menuState = "paused") {
     const menuTitleMap = {
         "paused": "GAME PAUSED",
@@ -38,7 +37,7 @@ export function GameMenu(isPaused, menuState = "paused") {
     if (isPaused) {
         pauseTitle.textContent = menuTitleMap[menuState];
         pauseOverlay.style.display = "block";
-        pauseMenu.style.display = "block";
+        pauseMenu.style.display = "flex";
 
         // Adjust resume button for different states
         if (menuState === "paused") {

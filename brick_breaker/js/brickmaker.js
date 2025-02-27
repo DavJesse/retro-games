@@ -65,8 +65,8 @@ class Brick {
 
             // Add the hit class which triggers the animation
               bricks.classList.add('hit');
-              let k=this.bricktype.split(" ")
-              bricks.classList.remove(k[1])
+              let brickclass=this.bricktype.split(" ")
+              bricks.classList.remove(brickclass[1])
               bricks.classList.add("red")
               this.bricktype="hit red"
 
