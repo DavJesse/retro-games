@@ -1,12 +1,13 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
-import {GameMenu, RestartButton, Updatelive} from "./menu.js"
+import {GameMenu, Updatelive} from "./menu.js"
 
 let paused = true;
 let started = false;
 let animationID = null;
 let gameSpeed = 4;
+var isPauseAllowed=true
 
 
 // Extract dimentions
@@ -37,7 +38,7 @@ let ballSpeedY = -gameSpeed;
 // Initialize paddle position at center of game container
 paddle.style.left = paddleX + "px";
 
-var hasbeencalled=false;
+var isUpdateLifeCalled=false;
 function updateBallPosition() {
     // Move ball horizontally and vertically
     ballX += ballSpeedX;
@@ -49,9 +50,10 @@ function updateBallPosition() {
     }
     // **Bounce off the top wall**
     if (ballY >= outOfBounds) { 
-        if (!hasbeencalled){
-        hasbeencalled=true
+        if (!isUpdateLifeCalled){
+        isUpdateLifeCalled=true
        if (Updatelive()){
+           isPauseAllowed=false;
         arrows({ key: " " }, "gameover");
         return
        }
@@ -93,6 +95,7 @@ function updateBallPosition() {
 
     // Reset game when player wins
     if (brickPositions.length === 0 && ballBounds.bottom >= paddleBounds.top) {
+        isPauseAllowed=false;
         arrows({ key: " " }, "nextLevel");
         return
     }
@@ -106,7 +109,8 @@ function updateBallPosition() {
 }
 
 export function resetGame() {
-    hasbeencalled=false;
+    isUpdateLifeCalled=false;
+    isPauseAllowed=true;
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
@@ -163,7 +167,9 @@ export function nextLevel(level=2,newgamespeed) {
 
 
 document.addEventListener("keydown", e => {
-    arrows(e,"paused");
+    if (isPauseAllowed){
+        arrows(e,"paused");
+    }
 });
 
 
