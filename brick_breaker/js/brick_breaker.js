@@ -40,6 +40,7 @@ paddle.style.left = paddleX + "px";
 
 var isUpdateLifeCalled=false;
 function updateBallPosition() {
+    if(paused) return;
     // Move ball horizontally and vertically
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -184,17 +185,15 @@ export function arrows(e,menutype) {
                 started = true;
             }
             if (!paused) { // play
-                if (!animationID) {
+                
                     animationID = requestAnimationFrame(updateBallPosition);
                     GameMenu(false,menutype);
-                }
+                
             } else { // pause
                 // cancel the current animation frame
-                if (animationID) {
-                    cancelAnimationFrame(animationID);
-                    animationID = null;
+                
                     GameMenu(paused,menutype);
-                }
+                
             }
             break;
         case "ArrowLeft": // PADDLE LEFT
