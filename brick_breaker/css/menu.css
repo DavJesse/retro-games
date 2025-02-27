@@ -1,10 +1,7 @@
 
 /* Pause Menu Styles */
-.hide{
-    display: block;
-}
-
 #pause-menu {
+    flex-direction: column;
     position: fixed;
     top: 50%;
     left: 50%;
