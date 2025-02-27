@@ -1,9 +1,6 @@
 
 export function loadBrickBreaker() {
-  const scoreBoard = document.getElementById("score-board");
   const gameContainer = document.getElementById("game-container");
-
-
   // Create paddle
   window.paddle = document.createElement("div"); // Make global
   paddle.id = "paddle";

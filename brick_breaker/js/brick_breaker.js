@@ -1,7 +1,7 @@
 import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
-import {GameMenu, RestartButton, Updatelive} from "./menu.js"
+import {GameMenu, Updatelive} from "./menu.js"
 
 let paused = true;
 let started = false;
