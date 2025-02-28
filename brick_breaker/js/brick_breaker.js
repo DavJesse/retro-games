@@ -2,6 +2,7 @@ import { brickPositions } from "./brickmaker.js";
 import { BrickBallCollision } from "./brick_ball_collision.js";
 import { generateBricks } from "./brickmaker.js";
 import {GameMenu, Updatelive} from "./menu.js"
+import domCache from "../../game_loader.js";
 
 let paused = true;
 let started = false;
@@ -11,8 +12,8 @@ var isPauseAllowed=true
 
 
 // Extract dimentions
-let gameContainer = document.getElementById("game-container");
-let paddle = document.getElementById("paddle");
+let gameContainer = domCache.getgamecontainer("gamecontainer");
+let paddle = domCache.getgamecontainer("paddle");
 
 // Determine widths of variables
 let containerWidth = gameContainer.clientWidth; // 600px
@@ -124,7 +125,7 @@ export function resetGame() {
 
     // Reset paddle position to the center
     paddleX = (containerWidth - paddleWidth) / 2;
-    document.getElementById("paddle").style.left = paddleX + "px";
+    domCache.getgamecontainer("paddle").style.left = paddleX + "px";
 
     // Set random initial ball direction
     ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right

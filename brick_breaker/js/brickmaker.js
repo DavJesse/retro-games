@@ -1,4 +1,5 @@
 import { OnBallHitBrick} from "./life.js"
+import domCache from "../../game_loader.js";
 
 var normalBricks = ["brick red", "brick orange", "brick yellow", "brick green", "brick blue"];
 var hardBricks = ["brick steel", "brick chrome", "brick metallic"];
@@ -43,7 +44,7 @@ class Brick {
          }
          brick.classList.add("brick-destroyed");
 
-         let scoreElement = document.getElementById("scores");
+         let scoreElement = domCache.getScoreBoardElements("score");
          if (!scoreElement) return;
 
          let currentScore = parseInt(scoreElement.textContent) || 0;
