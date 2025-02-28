@@ -170,6 +170,16 @@ export function nextLevel(level=2,newgamespeed) {
     // Update ball position in the DOM
     window.ball.style.left = ballX + "px";
     window.ball.style.top = ballY + "px";
+
+
+    //Ensure the game is not paused
+    paused = false;
+
+    // Restart the animation frame
+    if (animationID) {
+        cancelAnimationFrame(animationID);
+    }
+    animationID = requestAnimationFrame(updateBallPosition);
 }
 
 
