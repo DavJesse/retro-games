@@ -39,8 +39,13 @@ let ballSpeedY = -gameSpeed;
 paddle.style.left = paddleX + "px";
 
 var isUpdateLifeCalled=false;
+
 function updateBallPosition() {
-    if(paused) return;
+    if (paused) {
+        requestAnimationFrame(updateBallPosition)
+        return;
+    }
+
     // Move ball horizontally and vertically
     ballX += ballSpeedX;
     ballY += ballSpeedY;
@@ -49,63 +54,64 @@ function updateBallPosition() {
     if (ballX <= leftWall || ballX + 20 >= rightWall) { // 20 is ball width
         ballSpeedX *= -1; // Reverse direction
     }
+
     // **Bounce off the top wall**
     if (ballY >= outOfBounds) { 
-        if (!isUpdateLifeCalled){
-        isUpdateLifeCalled=true
-       if (Updatelive()){
-           isPauseAllowed=false;
-        arrows({ key: " " }, "gameover");
-        return
-       }
-    }
-    resetGame()
+        if (!isUpdateLifeCalled) {
+            isUpdateLifeCalled = true;
+            if (Updatelive()) {
+                isPauseAllowed = false;
+                arrows({ key: " " }, "gameover");
+                return;
+            }
+        }
+        resetGame();
     }
 
-    // paddle collision
+    // **Paddle Collision**
     let paddleBounds = paddle.getBoundingClientRect();
     let ballBounds = window.ball.getBoundingClientRect();
 
     if (
-    //   ballBounds.bottom >= paddleBounds.top &&
-      ballBounds.bottom >= paddleBounds.top &&
-      ballBounds.bottom <= paddleBounds.top + (0.5 * paddleHeight) &&
-      ballBounds.top <= paddleBounds.bottom &&
-      ballBounds.right >= paddleBounds.left &&
-      ballBounds.left <= paddleBounds.right &&
-      ballSpeedY > 0  // Only bounce when ball is moving downward
+        ballBounds.bottom >= paddleBounds.top &&
+        ballBounds.bottom <= paddleBounds.top + (0.5 * paddleHeight) &&
+        ballBounds.top <= paddleBounds.bottom &&
+        ballBounds.right >= paddleBounds.left &&
+        ballBounds.left <= paddleBounds.right &&
+        ballSpeedY > 0  // Only bounce when ball is moving downward
     ) {
-      ballSpeedY *= -1; // Reverse vertical direction
-      
-      // angle variation based on where ball hits paddle
-        if(ballBounds.right == paddleBounds.left || ballBounds.left == paddleBounds.right) {
+        ballSpeedY *= -1; // Reverse vertical direction
+
+        // Angle variation based on where the ball hits the paddle
+        if (ballBounds.right === paddleBounds.left || ballBounds.left === paddleBounds.right) {
             ballSpeedX *= -1;
         } 
     }
-    
+
     // **Game Over Check: Ball falls below the paddle**
     if (ballY <= topWall) {  // Since container height is 60px
         ballSpeedY *= -1;
     }
 
+    // **Brick Collision**
     const collision = BrickBallCollision(ballX, ballY, ballSpeedX, ballSpeedY, brickPositions);
     if (collision) {
         ballSpeedX = collision.ballSpeedX;
         ballSpeedY = collision.ballSpeedY;
     }
 
-    // Reset game when player wins
+    // **Win Condition: All bricks destroyed**
     if (brickPositions.length === 0 && ballBounds.bottom >= paddleBounds.top) {
-        isPauseAllowed=false;
+        isPauseAllowed = false;
         arrows({ key: " " }, "nextLevel");
-        return
+        return;
     }
-    console.log(gameSpeed)
 
-    // Update ball position in the DOM
+    // **Update Ball Position in DOM**
     window.ball.style.top = ballY + "px";
     window.ball.style.left = ballX + "px";
 
+    // **Request Next Animation Frame**
     animationID = requestAnimationFrame(updateBallPosition);
 }
 
@@ -183,10 +189,9 @@ export function arrows(e,menutype) {
             // set started to true once the space is clicked first time
             if (!started) {
                 started = true;
+                  init()
             }
-            if (!paused) { // play
-                
-                    animationID = requestAnimationFrame(updateBallPosition);
+            if (!paused) { // play'
                     GameMenu(false,menutype);
                 
             } else { // pause
@@ -232,5 +237,9 @@ export function arrows(e,menutype) {
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);
 function init() {
-    requestAnimationFrame(updateBallPosition);
+    // Cancel any existing animation frame before starting a new one
+    if (animationID) {
+        cancelAnimationFrame(animationID);
+    }
+    animationID = requestAnimationFrame(updateBallPosition);
 }
