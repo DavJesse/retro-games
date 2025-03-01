@@ -162,10 +162,6 @@ export function nextLevel(level=2,newgamespeed) {
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
-   const brickContainer = document.getElementById("brick-container");
-    if (brickContainer) {
-        brickContainer.remove();
-    }
     generateBricks(level)
 
     // Update ball position in the DOM

@@ -1,11 +1,120 @@
 class DomCache {
-    constructor() {
-      this.MenuElements = {}; // Store Menuelement references
-      this.gameConAndPaddle={};
-      this.ScoreboardElement={};
+  constructor() {
+      this.MenuElements = {}; 
+      this.gameConAndPaddle = {};
+      this.ScoreboardElement = {};
+      this.brickElements = {};
+  }
+
+  creatbrickelements() {
+      let brickWrapper = document.getElementById("brick-wrapper");
+      if (!brickWrapper) {
+          console.error("Error: 'brick-wrapper' not found in DOM.");
+          return null;
+      }
+
+      let brickcontainer = document.createElement("div");
+      brickcontainer.id = "brick-container";
+      brickWrapper.appendChild(brickcontainer);
+      
+
+      return brickcontainer;
+  }
+  createBricks(brickContainer) {
+    if (!brickContainer) {
+        console.error("Error: BrickContainer not found!");
+        return [];
     }
+
+    const fragment = document.createDocumentFragment();
+    const bricks = [];
+    let brickDimensions = null;
+
+    class BrickDimensions {
+        constructor(top, bottom, left, right) {
+            this.top = top;
+            this.bottom = bottom;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    for (let i = 0; i < 35; i++) {
+        const brick = document.createElement("div");
+        brick.classList.add("brick");
+        brick.id = i;
+        bricks.push(brick);
+        fragment.appendChild(brick);
+    }
+
+    
+    brickContainer.appendChild(fragment);
+    const allBrickDimensions = [];
+    const bricksPerRow = 7; 
+    const alternatingMargins = [3, 2]; 
+    
+    
+    const firstBrick = document.getElementById("0");
+    let firstBrickDimension = null;
+    
+    if (firstBrick) {
+        const rect = firstBrick.getBoundingClientRect();
+        firstBrickDimension = new BrickDimensions(
+            parseInt(rect.top),
+            parseInt(rect.bottom),
+            parseInt(rect.left),
+            parseInt(rect.right)
+        );
+    }
+    
+    if (!firstBrickDimension) {
+        console.error("Error: Could not get first brick dimensions.");
+    } else {
+        allBrickDimensions.push(firstBrickDimension);
+    }
+    
+    const brickWidth = firstBrickDimension.right - firstBrickDimension.left;
+    const brickHeight = 27;
+    let accumulatedMargin = 0;
+    let add = true; 
+    
+    
+    for (let i = 1; i < bricks.length; i++) {
+        const row = Math.floor(i / bricksPerRow);
+        const col = i % bricksPerRow;
+    
+    
+        if (col === 0) {
+            accumulatedMargin = 0;
+            add = true; 
+        }
+    
+       
+        accumulatedMargin += alternatingMargins[col % 2];
+    
+        const left = firstBrickDimension.left + col * brickWidth + accumulatedMargin;
+        let right = left + brickWidth;
+    
+        if (add) {
+            right += 1;
+            add = false;
+        } else {
+            add = true;
+        }
+    
+        const top = firstBrickDimension.top + row * brickHeight;
+        const bottom = top + brickHeight;
+    
+        const brickDimension = new BrickDimensions(top, bottom, left, right);
+        allBrickDimensions.push(brickDimension);
+    }  
+    return [bricks,allBrickDimensions];
+}
+
+
   
-    init() {
+
+  init() {
       // Menu elements
       this.MenuElements.pauseMenu = document.getElementById("pause-menu");
       this.MenuElements.PauseOverlay = document.getElementById("pause-overlay");
@@ -13,29 +122,41 @@ class DomCache {
       this.MenuElements.resumeBtn = document.getElementById("resume-btn");
       this.MenuElements.restartBtn = document.getElementById("restart-btn");
 
-      //scoreboard elements
-      this.ScoreboardElement.time=document.getElementById("time");
-      this.ScoreboardElement.score=document.getElementById("scores");
-      this.ScoreboardElement.level=document.getElementById("level")
-      this.ScoreboardElement.lives=document.getElementById("lives")
+      // Scoreboard elements
+      this.ScoreboardElement.time = document.getElementById("time");
+      this.ScoreboardElement.score = document.getElementById("scores");
+      this.ScoreboardElement.level = document.getElementById("level");
+      this.ScoreboardElement.lives = document.getElementById("lives");
 
-      //game container and paddle
-      this.gameConAndPaddle.gamecontainer=document.getElementById("game-container")
-      this.gameConAndPaddle.paddle=document.getElementById("paddle")
-      
-    }
-  
-    get(id) {
-      return this.MenuElements[id] || null; // Return element or null if not found
-    }
-    getScoreBoardElements(id){
-        return this.ScoreboardElement[id] || null;
-    }
-    getgamecontainer(id){
-        return this.gameConAndPaddle[id] || null;
-    }
+      // Game container and paddle
+      this.gameConAndPaddle.gamecontainer = document.getElementById("game-container");
+      this.gameConAndPaddle.paddle = document.getElementById("paddle");
+
+      // Brick container and bricks
+      this.brickElements.BrickContainer = this.creatbrickelements();
+      this.brickElements.bricks=this.createBricks(this.brickElements.BrickContainer);
   }
-  
+
+  get(id) {
+      return this.MenuElements[id] || null;
+  }
+
+  getScoreBoardElements(id) {
+      return this.ScoreboardElement[id] || null;
+  }
+
+  getgamecontainer(id) {
+      return this.gameConAndPaddle[id] || null;
+  }
+
+  getbrickElement(id) {
+      return this.brickElements[id] || null;
+  }
+
+
+}
+
+
   // Create a single instance and export it
   const domCache = new DomCache();
   export default domCache;
@@ -70,6 +191,7 @@ class DomCache {
         if (game === "brickBreaker") {
         const { loadBrickBreaker } = await import("./brick_breaker/js/load-brick-breaker.js");
         loadBrickBreaker();
+        domCache.init();
         const { generateBricks } = await import("./brick_breaker/js/brickmaker.js");
         generateBricks();
     } else {
@@ -79,6 +201,5 @@ class DomCache {
     console.error("Error loading game: ", error);
 }
 
-domCache.init();
   });
   

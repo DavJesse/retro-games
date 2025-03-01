@@ -1,4 +1,3 @@
-import { generateBricks } from "./brickmaker.js";
 import { nextLevel, resetGame } from "./brick_breaker.js";
 import { arrows } from "./brick_breaker.js";
 import domCache from "../../game_loader.js";
@@ -44,10 +43,7 @@ export function GameMenu(isPaused, menuState = "paused") {
 
 
 export function RestartButton(menuState) {
-    const brickContainerElement = document.getElementById("brick-container");
-    if (brickContainerElement) {
-        brickContainerElement.remove();
-    }
+    
     let currentLevel = domCache.getScoreBoardElements("level").textContent;
     arrows({ key: " " }, menuState);
     resetGame();
@@ -63,7 +59,7 @@ export function RestartButton(menuState) {
 }
 
 export function Updatelive() {
-    let livesElement = domCache.ScoreboardElement("lives");
+    let livesElement = domCache.getScoreBoardElements("lives");
     let remainingLives = parseInt(livesElement.textContent);
     
     if (remainingLives > 0) {
