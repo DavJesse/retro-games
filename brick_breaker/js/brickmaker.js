@@ -86,7 +86,7 @@ var getRandomBrick = (brickList) => {
 
 export function generateBricks(level = 1) {
  
-   var brickContainer = domCache.getbrickElement("BrickContainer");
+  // var brickContainer = domCache.getbrickElement("BrickContainer");
    
   
    var NumberOfLifeBreaks=(()=>{
@@ -100,25 +100,25 @@ export function generateBricks(level = 1) {
    })();
 
    if (level === 1) {
-      createBricks(brickContainer, NumberOfLifeBreaks, 0, 35, [...normalBricks, ...lifeBricks]);
+      createBricks(NumberOfLifeBreaks, 0, 35, [...normalBricks, ...lifeBricks]);
    }else if (level === 2){
-      console.log("LEVEL 2")
-      createBricks(brickContainer,NumberOfLifeBreaks,10,35,[...normalBricks,...lifeBricks,...hardBricks])
-   }//else if(level === 3){
-   //    createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
-   // }else if(level === 4){
-   //    createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
-   // }else{
-   //    createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
-   // }
+      createBricks(NumberOfLifeBreaks,10,35,[...normalBricks,...lifeBricks,...hardBricks])
+   }else if(level === 3){
+      createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
+   }else if(level === 4){
+      createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
+   }else{
+      createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
+   }
 }
 
 
-function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
+function createBricks(maxLifeBricks, maxhardbricks, maxBricks, Allbricks) {
    let totalBricks = 0;
    let lifeBrickCount = 0;
    let hardbrickCount = 0;
-   let bricks=domCache.getbrickElement("bricks")
+   let bricks=domCache.getbrickElement("bricks")[0];
+   let brickdim=domCache.getbrickElement("bricks")[1];
 
    function createNextBrick() {
        if (totalBricks >= maxBricks) return; 
@@ -140,18 +140,20 @@ function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, A
        let brickElement = bricks[totalBricks];
        brickElement.setAttribute("class", brickType);
        brickElement.style.display="block";
-      //  brickContainer.appendChild(brickElement);
 
        let maxnumberofhit = hardBricks.includes(brickType) ? 2 : 1;
 
-       let brickDimensions = brickElement.getBoundingClientRect();
+       //let brickDimensions = brickElement.getBoundingClientRect();
+       //console.log("left:",parseInt(brickDimensions.left))
+      // console.log("right:",parseInt(brickDimensions.right))
+    
        brickPositions.push(new Brick(
            brickElement.id, 
            brickType, 
-           parseInt(brickDimensions.top), 
-           parseInt(brickDimensions.bottom), 
-           parseInt(brickDimensions.left), 
-           parseInt(brickDimensions.right), 
+           brickdim[totalBricks].top, 
+           brickdim[totalBricks].bottom, 
+           brickdim[totalBricks].left, 
+           brickdim[totalBricks].right, 
            false, 
            maxnumberofhit
        ));
