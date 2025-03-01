@@ -86,7 +86,6 @@ var getRandomBrick = (brickList) => {
 
 export function generateBricks(level = 1) {
  
-  // var brickContainer = domCache.getbrickElement("BrickContainer");
    
   
    var NumberOfLifeBreaks=(()=>{
@@ -104,11 +103,11 @@ export function generateBricks(level = 1) {
    }else if (level === 2){
       createBricks(NumberOfLifeBreaks,10,35,[...normalBricks,...lifeBricks,...hardBricks])
    }else if(level === 3){
-      createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
+      createBricks(NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
    }else if(level === 4){
-      createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
+      createBricks(NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
    }else{
-      createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
+      createBricks(NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
    }
 }
 
