@@ -20,27 +20,97 @@ class DomCache {
 
       return brickcontainer;
   }
-  createBricks(brickcontainer) {
-    const brickContainer = brickcontainer;
+  createBricks(brickContainer) {
     if (!brickContainer) {
         console.error("Error: BrickContainer not found!");
         return [];
     }
+
     const fragment = document.createDocumentFragment();
     const bricks = [];
+    let brickDimensions = null;
+
+    class BrickDimensions {
+        constructor(top, bottom, left, right) {
+            this.top = top;
+            this.bottom = bottom;
+            this.left = left;
+            this.right = right;
+        }
+    }
 
     for (let i = 0; i < 35; i++) {
         const brick = document.createElement("div");
         brick.classList.add("brick");
-       // brick.style.display="none"
-        brick.id=i
+        brick.id = i;
         bricks.push(brick);
         fragment.appendChild(brick);
     }
 
-    brickContainer.appendChild(fragment); // Append all bricks at once
-    return bricks;
+    
+    brickContainer.appendChild(fragment);
+    const allBrickDimensions = [];
+    const bricksPerRow = 7; 
+    const alternatingMargins = [3, 2]; 
+    
+    
+    const firstBrick = document.getElementById("0");
+    let firstBrickDimension = null;
+    
+    if (firstBrick) {
+        const rect = firstBrick.getBoundingClientRect();
+        firstBrickDimension = new BrickDimensions(
+            parseInt(rect.top),
+            parseInt(rect.bottom),
+            parseInt(rect.left),
+            parseInt(rect.right)
+        );
+    }
+    
+    if (!firstBrickDimension) {
+        console.error("Error: Could not get first brick dimensions.");
+    } else {
+        allBrickDimensions.push(firstBrickDimension);
+    }
+    
+    const brickWidth = firstBrickDimension.right - firstBrickDimension.left;
+    const brickHeight = 27;
+    let accumulatedMargin = 0;
+    let add = true; 
+    
+    
+    for (let i = 1; i < bricks.length; i++) {
+        const row = Math.floor(i / bricksPerRow);
+        const col = i % bricksPerRow;
+    
+    
+        if (col === 0) {
+            accumulatedMargin = 0;
+            add = true; 
+        }
+    
+       
+        accumulatedMargin += alternatingMargins[col % 2];
+    
+        const left = firstBrickDimension.left + col * brickWidth + accumulatedMargin;
+        let right = left + brickWidth;
+    
+        if (add) {
+            right += 1;
+            add = false;
+        } else {
+            add = true;
+        }
+    
+        const top = firstBrickDimension.top + row * brickHeight;
+        const bottom = top + brickHeight;
+    
+        const brickDimension = new BrickDimensions(top, bottom, left, right);
+        allBrickDimensions.push(brickDimension);
+    }  
+    return [bricks,allBrickDimensions];
 }
+
 
   
 
