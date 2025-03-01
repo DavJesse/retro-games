@@ -3,10 +3,11 @@
         height: 20px;
         border-radius: 50%;
         position: absolute;
-        top: 550px;
-        left: 220px;
+        top: 0px;
+        left: 0px;
         background-color: #ffffff;
         margin-left: 60px;
+        will-change:transform;
         
     }
 
