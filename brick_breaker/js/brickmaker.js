@@ -85,16 +85,10 @@ var getRandomBrick = (brickList) => {
 };
 
 export function generateBricks(level = 1) {
-   var brickWrapper = document.getElementById("brick-wrapper");
-   if (!brickWrapper) {
-      console.error("Game container not found!");
-      return;
-   }
-
-   var brickContainer = document.createElement("div");
-   brickContainer.id = "brick-container";
-   brickWrapper.appendChild(brickContainer);
-
+ 
+   var brickContainer = domCache.getbrickElement("BrickContainer");
+   
+  
    var NumberOfLifeBreaks=(()=>{
              let remaininglives=parseInt(document.getElementById("lives").textContent)
              if (remaininglives >= 3){
@@ -108,14 +102,15 @@ export function generateBricks(level = 1) {
    if (level === 1) {
       createBricks(brickContainer, NumberOfLifeBreaks, 0, 35, [...normalBricks, ...lifeBricks]);
    }else if (level === 2){
+      console.log("LEVEL 2")
       createBricks(brickContainer,NumberOfLifeBreaks,10,35,[...normalBricks,...lifeBricks,...hardBricks])
-   }else if(level === 3){
-      createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
-   }else if(level === 4){
-      createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
-   }else{
-      createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
-   }
+   }//else if(level === 3){
+   //    createBricks(brickContainer,NumberOfLifeBreaks,15,35,[...lifeBricks,...normalBricks,...hardBricks])
+   // }else if(level === 4){
+   //    createBricks(brickContainer,NumberOfLifeBreaks,18,35,[...lifeBricks,...hardBricks,...normalBricks])
+   // }else{
+   //    createBricks(brickContainer,NumberOfLifeBreaks,24,35,[...lifeBricks,...hardBricks,...normalBricks])
+   // }
 }
 
 
@@ -123,6 +118,7 @@ function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, A
    let totalBricks = 0;
    let lifeBrickCount = 0;
    let hardbrickCount = 0;
+   let bricks=domCache.getbrickElement("bricks")
 
    function createNextBrick() {
        if (totalBricks >= maxBricks) return; 
@@ -141,16 +137,16 @@ function createBricks(brickContainer, maxLifeBricks, maxhardbricks, maxBricks, A
        }
        if (hardBricks.includes(brickType)) hardbrickCount++;
 
-       let brickElement = document.createElement("div");
+       let brickElement = bricks[totalBricks];
        brickElement.setAttribute("class", brickType);
-       brickElement.setAttribute("id", totalBricks);
-       brickContainer.appendChild(brickElement);
+       brickElement.style.display="block";
+      //  brickContainer.appendChild(brickElement);
 
        let maxnumberofhit = hardBricks.includes(brickType) ? 2 : 1;
 
        let brickDimensions = brickElement.getBoundingClientRect();
        brickPositions.push(new Brick(
-           totalBricks, 
+           brickElement.id, 
            brickType, 
            parseInt(brickDimensions.top), 
            parseInt(brickDimensions.bottom), 
