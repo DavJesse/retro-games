@@ -121,6 +121,10 @@ class DomCache {
       this.MenuElements.pauseTitle = document.getElementById("pause-title");
       this.MenuElements.resumeBtn = document.getElementById("resume-btn");
       this.MenuElements.restartBtn = document.getElementById("restart-btn");
+      this.MenuElements.currentscore=document.getElementById("pause-score");
+      this.MenuElements.currenttime=document.getElementById("pause-time");
+      this.MenuElements.currentscoreclass=document.querySelector(".pause-score")
+      this.MenuElements.currenttimeclass=document.querySelector(".pause-time")
 
       // Scoreboard elements
       this.ScoreboardElement.time = document.getElementById("time");
