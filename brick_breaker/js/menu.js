@@ -15,12 +15,22 @@ export function GameMenu(isPaused, menuState = "paused") {
     const pauseTitle = domCache.get("pauseTitle");
     const resumeBtn = domCache.get("resumeBtn");
     const restartBtn = domCache.get("restartBtn");
+    const currentscore=domCache.get("currentscore")
+    const currenttime=domCache.get("currenttime")
 
     if (isPaused) {
         pauseTitle.textContent = menuTitleMap[menuState];
         pauseOverlay.style.display = "block";
         pauseMenu.style.display = "flex";
 
+                 if(menuState === "paused"){
+                       domCache.get("currentscoreclass").style.display="none";
+                       domCache.get("currenttimeclass").style.display="none";
+                }else{
+                     currentscore.textContent=domCache.getScoreBoardElements("score").textContent;
+                     currenttime.textContent=domCache.getScoreBoardElements("time").textContent;
+                    
+                 }
         // Adjust resume button for different states
         if (menuState === "paused") {
             resumeBtn.textContent = "Resume Game";

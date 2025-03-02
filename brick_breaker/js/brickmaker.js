@@ -85,9 +85,6 @@ var getRandomBrick = (brickList) => {
 };
 
 export function generateBricks(level = 1) {
- 
-   
-  
    var NumberOfLifeBreaks=(()=>{
              let remaininglives=parseInt(document.getElementById("lives").textContent)
              if (remaininglives >= 3){
