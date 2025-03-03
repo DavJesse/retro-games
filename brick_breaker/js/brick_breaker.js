@@ -10,10 +10,15 @@ let animationID = null;
 let gameSpeed = 4;
 var isPauseAllowed=true
 
-
 // Extract dimentions
 let gameContainer = domCache.getgamecontainer("gamecontainer");
 let paddle = domCache.getgamecontainer("paddle");
+
+// timer
+const timerElement = document.getElementById("time");
+window.startTime = Date.now();
+window.totalTime = 0;
+window.previousTime = 0;
 
 // Determine widths of variables
 let containerWidth = gameContainer.clientWidth; // 600px
@@ -48,6 +53,9 @@ function updateBallPosition() {
         requestAnimationFrame(updateBallPosition)
         return;
     }
+
+    // update the current time
+    window.updateTimer(timerElement);
 
     // Move ball horizontally and vertically
     ballX += ballSpeedX;
@@ -202,16 +210,14 @@ export function arrows(e,menutype) {
             // set started to true once the space is clicked first time
             if (!started) {
                 started = true;
-                  init()
+                init();
             }
             if (!paused) { // play'
-                    GameMenu(false,menutype);
-                
+                window.previousTime = Date.now();
+                GameMenu(false,menutype);
             } else { // pause
                 // cancel the current animation frame
-                
-                    GameMenu(paused,menutype);
-                
+                GameMenu(paused,menutype);
             }
             break;
         case "ArrowLeft": // PADDLE LEFT
@@ -251,9 +257,30 @@ export function arrows(e,menutype) {
     }
 }
 
+// timer
+window.updateTimer = function(element) {
+    let currentTime = Date.now();
+    let deltaTime = currentTime - window.previousTime;
+    window.totalTime += deltaTime;
+
+    // Reset startTime to the current time for the next interval
+    window.previousTime = currentTime;
+
+    let minutes = Math.floor(window.totalTime / 60000); // 60000ms in a minute
+    let seconds = Math.floor((window.totalTime % 60000) / 1000); // remaining seconds
+
+    element.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+
 // Update ball movement every 16ms (~60 FPS)
 // setInterval(updateBallPosition, 16);
 function init() {
+    // start the timer
+    window.startTime = Date.now();
+    window.previousTime = window.startTime;
+    window.updateTimer(timerElement);
+
     // Cancel any existing animation frame before starting a new one
     if (animationID) {
         cancelAnimationFrame(animationID);

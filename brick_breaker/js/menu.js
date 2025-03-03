@@ -29,7 +29,6 @@ export function GameMenu(isPaused, menuState = "paused") {
                 }else{
                      currentscore.textContent=domCache.getScoreBoardElements("score").textContent;
                      currenttime.textContent=domCache.getScoreBoardElements("time").textContent;
-                    
                  }
         // Adjust resume button for different states
         if (menuState === "paused") {
