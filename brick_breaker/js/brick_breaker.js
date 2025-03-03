@@ -32,18 +32,13 @@ let rightWall = leftWall + containerWidth;
 let ballX = ((containerWidth - 20) / 2) - 60;
 let ballY = 550;
 let paddleX = (containerWidth - paddleWidth) / 2;
-//let paddleY = 580; // Adjusted to ensure the paddle is at the correct position
 let paddleHeight = 30; // Paddle height needed for collision
-//let paddleLeft = paddleX - (paddleWidth / 2);
-//let paddleRight = paddleLeft + paddleWidth;
 
 // Initialize ball speed
 let ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed;
 let ballSpeedY = -gameSpeed;
 
 // Initialize paddle position at center of game container
-//console.log(paddleX)
-//paddle.style.left = paddleX + "px";
 paddle.style.transform = `translateX(${paddleX}px)`;
 
 var isUpdateLifeCalled=false;
@@ -120,7 +115,6 @@ function updateBallPosition() {
 
     // **Update Ball Position in DOM**
     window.ball.style.transform = `translate(${ballX}px,${ballY}px)`
-   // window.ball.style.left = ballX + "px";
 
     // **Request Next Animation Frame**
     animationID = requestAnimationFrame(updateBallPosition);
@@ -129,6 +123,7 @@ function updateBallPosition() {
 export function resetGame() {
     isUpdateLifeCalled=false;
     isPauseAllowed=true;
+
     // Reset ball position to the center-bottom of the game container
     ballX = (containerWidth - 20) / 2; // Center horizontally
     ballY = 550; // Near the bottom
@@ -136,7 +131,6 @@ export function resetGame() {
     // Reset paddle position to the center
     paddleX = (containerWidth - paddleWidth) / 2;
     domCache.getgamecontainer("paddle").style.transform = `translateX(${paddleX}px)`;
-   // domCache.getgamecontainer("paddle").style.left = paddleX + "px";
 
     // Set random initial ball direction
     ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
@@ -147,8 +141,6 @@ export function resetGame() {
 
     // Update ball position in the DOM
      window.ball.style.transform = `translate(${ballX}px,${ballY}px)`
-    // window.ball.style.left = ballX + "px";
-    // window.ball.style.top = ballY + "px";
 }
 
 export function nextLevel(level=2,newgamespeed) {
@@ -167,7 +159,6 @@ export function nextLevel(level=2,newgamespeed) {
     // Reset paddle position to the center
     paddleX = (containerWidth - paddleWidth) / 2;
     domCache.getgamecontainer("paddle").style.transform = `translateX(${paddleX}px)`;
-    // domCache.getgamecontainer("paddle").style.left = paddleX + "px";
 
     // Set random initial ball direction
     ballSpeedX = Math.random() > 0.5 ? gameSpeed : -gameSpeed; // Random left or right
@@ -179,9 +170,6 @@ export function nextLevel(level=2,newgamespeed) {
 
     // Update ball position in the DOM
       window.ball.style.transform = `translate(${ballX}px,${ballY}px)`
-    // window.ball.style.left = ballX + "px";
-    // window.ball.style.top = ballY + "px";
-
 
     //Ensure the game is not paused
     paused = false;
@@ -227,13 +215,11 @@ export function arrows(e,menutype) {
                 } else {
                     paddleX -= 75;
                     paddle.style.transform=`translateX(${paddleX}px)`
-                   // paddle.style.left = `${paddleX}px`;
                 }
 
                 if (paused && !started && ballY == 550) {
                     ballX -= 75;
                     window.ball.style.transform=`translate(${ballX}px,550px)`
-                 //  ball.style.left = `${ballX}px`;
                 }
             }
             break;
@@ -244,13 +230,11 @@ export function arrows(e,menutype) {
                 } else {
                     paddleX += 75;
                     paddle.style.transform=`translateX(${paddleX}px)`
-                    //paddle.style.left = `${paddleX}px`;
                 }
 
                 if (paused && !started && ballY == 550) {
                     ballX += 75;
                    window.ball.style.transform = `translate(${ballX}px,550px)`;
-                   //  ball.style.left = `${ballX}px`;
                 }
             }
             break;
