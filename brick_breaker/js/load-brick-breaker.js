@@ -8,6 +8,7 @@ export function loadBrickBreaker() {
   // Create ball
   window.ball = document.createElement("div"); // Make global
   ball.id = "ball";
+  ball.style.transform=`translate(235px,550px)`
   gameContainer.appendChild(ball);
 
   // Load the game logic
