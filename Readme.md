@@ -2,6 +2,30 @@
 ## Overview
 
 Brick Breaker is a classic arcade-style game where the player controls a paddle to bounce a ball and break bricks. The objective is to clear all the bricks while ensuring the ball does not fall below the paddle. This game is built using plain JavaScript and the DOM, following strict performance guidelines to maintain 50-60 FPS.
+
+### How to Run
+1. Clone repository from gitea or github.
+
+From gitea:
+```
+git clone https://learn.zone01kisumu.ke/git/tesiaka/make-your-game.git
+cd make-your-game
+```
+
+From github:
+```
+git clone https://github.com/DavJesse/retro-games.git
+cd retro-games
+```
+
+2. Run program
+```
+python 3 -m http.server
+```
+
+### Requirement
+For better performance, turn-off your system's GPU
+
 ### Features
 
 - Runs at 60 FPS with smooth animations using requestAnimationFrame.
