@@ -1,88 +1,59 @@
-import { generateBricks } from "./brickmaker.js";
 import { nextLevel, resetGame } from "./brick_breaker.js";
 import { arrows } from "./brick_breaker.js";
+import domCache from "../../game_loader.js";
 
-function CreateOverlay(isPaused) {
-    if (isPaused) {
-        let overlayElement = document.createElement("div");
-        overlayElement.setAttribute("id", "pause-overlay");
-        document.getElementById("game-container").appendChild(overlayElement);
-    } else {
-        let existingOverlay = document.getElementById("pause-overlay");
-        if (existingOverlay) {
-            existingOverlay.remove();
-        }
-    }
-}
-// // <div id="pause-menu">
-// <h2>GAME PAUSED</h2>
-// <div class="pause-score">Score: <span id="pause-score">0</span></div>
-// <button class="pause-btn resume" onclick="resumeGame()">Resume Game</button>
-// <button class="pause-btn next-level" onclick="nextLevel()">Next Level</button>
-// <button class="pause-btn" onclick="restartGame()">Restart Game</button>
-// </div>
 
 export function GameMenu(isPaused, menuState = "paused") {
-    var menuTitleMap = {
+    const menuTitleMap = {
         "paused": "GAME PAUSED",
         "gameover": "GAME OVER!",
         "nextLevel": "Level Completed"
     };
-    
+
+    const pauseMenu = domCache.get("pauseMenu");
+    const pauseOverlay = domCache.get("PauseOverlay");
+    const pauseTitle = domCache.get("pauseTitle");
+    const resumeBtn = domCache.get("resumeBtn");
+    const restartBtn = domCache.get("restartBtn");
+    const currentscore=domCache.get("currentscore")
+    const currenttime=domCache.get("currenttime")
+
     if (isPaused) {
-        CreateOverlay(isPaused);
-        let pauseMenuElement = document.createElement("div");
-        pauseMenuElement.setAttribute("id", "pause-menu");
-        document.getElementById("game-container").appendChild(pauseMenuElement);
+        pauseTitle.textContent = menuTitleMap[menuState];
+        pauseOverlay.style.display = "block";
+        pauseMenu.style.display = "flex";
 
-        let pauseTitleElement = document.createElement("h2");
-        pauseTitleElement.textContent = menuTitleMap[menuState];
-        pauseMenuElement.appendChild(pauseTitleElement);
-
-        if (menuState === "paused" || menuState === "nextLevel") {
-            let resumeButton = document.createElement("button");
-            pauseMenuElement.appendChild(resumeButton);
-
-            if (menuState === "paused") {
-                resumeButton.setAttribute("class", "pause-btn resume");
-                resumeButton.textContent = "Resume Game";
-                resumeButton.onclick = () => {
-                    arrows({ key: " " }, "paused");
-                };
-            } else {
-                resumeButton.setAttribute("class", "pause-btn next-level");
-                resumeButton.textContent = "Next Level";
-                resumeButton.onclick = () => {
-                    RestartButton(menuState);
-                };
-            }
+                 if(menuState === "paused"){
+                       domCache.get("currentscoreclass").style.display="none";
+                       domCache.get("currenttimeclass").style.display="none";
+                }else{
+                     currentscore.textContent=domCache.getScoreBoardElements("score").textContent;
+                     currenttime.textContent=domCache.getScoreBoardElements("time").textContent;
+                 }
+        // Adjust resume button for different states
+        if (menuState === "paused") {
+            resumeBtn.textContent = "Resume Game";
+            resumeBtn.onclick = () => arrows({ key: " " }, "paused");
+            resumeBtn.style.display = "block";
+        } else if (menuState === "nextLevel") {
+            resumeBtn.textContent = "Next Level";
+            resumeBtn.onclick = () => RestartButton(menuState);
+            resumeBtn.style.display = "block";
+        } else {
+            resumeBtn.style.display = "none"; // Hide if not needed
         }
- 
-        
-        let restartButton = document.createElement("button");
-        restartButton.setAttribute("class", "pause-btn");
-        restartButton.textContent = "Restart the Game";
-        pauseMenuElement.appendChild(restartButton);
-        restartButton.onclick = () => {
-            RestartButton(menuState);
-        };
-    
 
+        restartBtn.onclick = () => RestartButton(menuState);
     } else {
-        CreateOverlay(isPaused);
-        let existingPauseMenu = document.getElementById("pause-menu");
-        if (existingPauseMenu) {
-            existingPauseMenu.remove();
-        }
+        pauseOverlay.style.display = "none";
+        pauseMenu.style.display = "none";
     }
 }
 
+
 export function RestartButton(menuState) {
-    const brickContainerElement = document.getElementById("brick-container");
-    if (brickContainerElement) {
-        brickContainerElement.remove();
-    }
-    let currentLevel = document.getElementById("level").textContent;
+    
+    let currentLevel = domCache.getScoreBoardElements("level").textContent;
     arrows({ key: " " }, menuState);
     resetGame();
     
@@ -97,7 +68,7 @@ export function RestartButton(menuState) {
 }
 
 export function Updatelive() {
-    let livesElement = document.getElementById("lives");
+    let livesElement = domCache.getScoreBoardElements("lives");
     let remainingLives = parseInt(livesElement.textContent);
     
     if (remainingLives > 0) {
@@ -109,7 +80,7 @@ export function Updatelive() {
 }
 
 function updatelevel(){
-    let LevelElement=document.getElementById("level")
+    let LevelElement=domCache.getScoreBoardElements("level")
     let Currentlevel=parseInt(LevelElement.textContent)
 
     Currentlevel+=1
@@ -125,13 +96,13 @@ function IncreaseGameSpeed(){
 
 
 function resetToLevelOne(level) {
-    let LevelElement = document.getElementById("level");
+    let LevelElement = domCache.getScoreBoardElements("level");
     LevelElement.textContent = 1;  
 
-    let livesElement = document.getElementById("lives");
+    let livesElement = domCache.getScoreBoardElements("lives");
     livesElement.textContent = 3;  
 
-    let scores=document.getElementById("scores")
+    let scores=domCache.getScoreBoardElements("score");
     scores.textContent=0;
 
     const speedMap = {
